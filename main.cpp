@@ -1,11 +1,40 @@
 #include "mainwindow.h"
 
-#include <QApplication>
+#include "overviewkunde.h"
+#include "overviewlieferanten.h"
+#include "overviewartikel.h"
+#include "overviewbestellungen.h"
 
-int main(int argc, char *argv[])
+#include <QApplication>
+#include <QStackedWidget>
+#include <QVBoxLayout>
+
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+
+    QStackedWidget* stack = new QStackedWidget();
+
+    stack->setFixedWidth(800);
+    stack->setFixedHeight(600);
+
+    MainWindow* mainWindow = new MainWindow(nullptr, stack);
+
+    stack->addWidget(mainWindow);
+
+    OverviewKunde* overviewKunde = new OverviewKunde(mainWindow);
+    OverviewArtikel* overviewArtikel = new OverviewArtikel(mainWindow);
+    OverviewLieferanten* overviewLieferanten = new OverviewLieferanten(mainWindow);
+    OverviewBestellungen* overviewBestellungen = new OverviewBestellungen(mainWindow);
+
+    stack->addWidget(overviewKunde);
+    stack->addWidget(overviewArtikel);
+    stack->addWidget(overviewLieferanten);
+    stack->addWidget(overviewBestellungen);
+
+    stack->setCurrentWidget(mainWindow);
+
+    stack->show();
+
     return a.exec();
 }
