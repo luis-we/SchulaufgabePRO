@@ -18,3 +18,15 @@ void OverviewArtikel::on_back_to_main_clicked()
     this->parent->back_to_main();
 }
 
+
+void OverviewArtikel::on_pushButton_clicked()
+{
+
+}
+
+
+void OverviewArtikel::on_pushButton_2_clicked()
+{
+
+}
+
