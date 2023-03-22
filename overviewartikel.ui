@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>800</height>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,8 +54,8 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>100</y>
-     <width>371</width>
+     <y>150</y>
+     <width>381</width>
      <height>571</height>
     </rect>
    </property>
@@ -63,8 +63,8 @@
   <widget class="QTextBrowser" name="textBrowser">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>120</y>
+     <x>450</x>
+     <y>170</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -73,8 +73,8 @@
   <widget class="QTextBrowser" name="textBrowser_2">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>190</y>
+     <x>450</x>
+     <y>240</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -83,8 +83,8 @@
   <widget class="QTextBrowser" name="textBrowser_3">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>260</y>
+     <x>450</x>
+     <y>310</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -93,8 +93,8 @@
   <widget class="QTextBrowser" name="textBrowser_4">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>330</y>
+     <x>450</x>
+     <y>380</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -103,8 +103,8 @@
   <widget class="QTextBrowser" name="textBrowser_5">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>400</y>
+     <x>450</x>
+     <y>450</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -113,8 +113,8 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>100</y>
+     <x>450</x>
+     <y>150</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -126,8 +126,8 @@
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>170</y>
+     <x>450</x>
+     <y>220</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -139,8 +139,8 @@
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>240</y>
+     <x>450</x>
+     <y>290</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -152,8 +152,8 @@
   <widget class="QLabel" name="label_5">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>310</y>
+     <x>450</x>
+     <y>360</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -165,8 +165,8 @@
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
-     <x>440</x>
-     <y>380</y>
+     <x>450</x>
+     <y>430</y>
      <width>211</width>
      <height>16</height>
     </rect>
@@ -178,8 +178,8 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>460</y>
+     <x>470</x>
+     <y>510</y>
      <width>121</width>
      <height>31</height>
     </rect>
@@ -191,14 +191,56 @@
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
-     <x>640</x>
-     <y>460</y>
+     <x>650</x>
+     <y>510</y>
      <width>121</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text">
     <string>Zurücksetzen</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>99</y>
+     <width>351</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Artikel anlegen / bearbeiten</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>99</y>
+     <width>381</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string>Artikelliste</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
  </widget>
