@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
     QStackedWidget* stack = new QStackedWidget();
 
     stack->setFixedWidth(800);
-    stack->setFixedHeight(600);
+    stack->setFixedHeight(800);
 
     MainWindow* mainWindow = new MainWindow(nullptr, stack);
 

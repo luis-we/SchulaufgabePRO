@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 
 #include <QStackedWidget>
+#include <QSqlDatabase>
+#include <QMessageLogger>
 
 MainWindow::MainWindow(QWidget* parent, QStackedWidget* stack) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
