@@ -19,3 +19,15 @@ void OverviewKunde::on_back_to_main_clicked()
     this->parent->back_to_main();
 }
 
+
+void OverviewKunde::on_save_clicked()
+{
+
+}
+
+
+void OverviewKunde::on_reset_clicked()
+{
+
+}
+

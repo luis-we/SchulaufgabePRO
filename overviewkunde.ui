@@ -26,7 +26,7 @@
     <string>Back</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="headline">
    <property name="geometry">
     <rect>
      <x>110</x>
@@ -60,7 +60,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser">
+  <widget class="QTextBrowser" name="salutation">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -70,7 +70,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_2">
+  <widget class="QTextBrowser" name="name">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -80,7 +80,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_3">
+  <widget class="QTextBrowser" name="firstname">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -90,7 +90,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_4">
+  <widget class="QTextBrowser" name="street">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -100,7 +100,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_5">
+  <widget class="QTextBrowser" name="ort">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -110,12 +110,12 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label_2">
+  <widget class="QLabel" name="salutation_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>150</y>
-     <width>211</width>
+     <width>161</width>
      <height>16</height>
     </rect>
    </property>
@@ -123,12 +123,12 @@
     <string>Anrede</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="name_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>220</y>
-     <width>211</width>
+     <width>341</width>
      <height>16</height>
     </rect>
    </property>
@@ -136,12 +136,12 @@
     <string>Name</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_4">
+  <widget class="QLabel" name="firstname_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>290</y>
-     <width>211</width>
+     <width>341</width>
      <height>16</height>
     </rect>
    </property>
@@ -149,12 +149,12 @@
     <string>Vorname</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="street_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>360</y>
-     <width>211</width>
+     <width>261</width>
      <height>16</height>
     </rect>
    </property>
@@ -162,12 +162,12 @@
     <string>Straße</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_6">
+  <widget class="QLabel" name="ort_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>430</y>
-     <width>211</width>
+     <width>221</width>
      <height>16</height>
     </rect>
    </property>
@@ -175,7 +175,7 @@
     <string>Ort</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="save">
    <property name="geometry">
     <rect>
      <x>470</x>
@@ -188,7 +188,7 @@
     <string>Speichern</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="reset">
    <property name="geometry">
     <rect>
      <x>650</x>
@@ -201,7 +201,7 @@
     <string>Zurücksetzen</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_8">
+  <widget class="QLabel" name="manage_label">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -222,7 +222,7 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_9">
+  <widget class="QLabel" name="list_label">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -243,12 +243,12 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QLabel" name="label_10">
+  <widget class="QLabel" name="phone_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>500</y>
-     <width>211</width>
+     <width>341</width>
      <height>16</height>
     </rect>
    </property>
@@ -256,7 +256,7 @@
     <string>Telefon</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_11">
+  <widget class="QLabel" name="streetnr_label">
    <property name="geometry">
     <rect>
      <x>730</x>
@@ -269,12 +269,12 @@
     <string>Nr.</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_12">
+  <widget class="QLabel" name="birthdate_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>570</y>
-     <width>211</width>
+     <width>341</width>
      <height>16</height>
     </rect>
    </property>
@@ -282,7 +282,7 @@
     <string>Geburtsdatum</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_13">
+  <widget class="QLabel" name="titel_label">
    <property name="geometry">
     <rect>
      <x>630</x>
@@ -295,12 +295,12 @@
     <string>Titel</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_14">
+  <widget class="QLabel" name="mail_label">
    <property name="geometry">
     <rect>
      <x>450</x>
      <y>640</y>
-     <width>211</width>
+     <width>341</width>
      <height>16</height>
     </rect>
    </property>
@@ -308,12 +308,12 @@
     <string>Email</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_15">
+  <widget class="QLabel" name="plz_label">
    <property name="geometry">
     <rect>
      <x>690</x>
      <y>430</y>
-     <width>61</width>
+     <width>101</width>
      <height>20</height>
     </rect>
    </property>
@@ -321,7 +321,7 @@
     <string>Plz.</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_6">
+  <widget class="QTextBrowser" name="streetnr">
    <property name="geometry">
     <rect>
      <x>730</x>
@@ -331,7 +331,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_7">
+  <widget class="QTextBrowser" name="plz">
    <property name="geometry">
     <rect>
      <x>690</x>
@@ -341,7 +341,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_8">
+  <widget class="QTextBrowser" name="titel">
    <property name="geometry">
     <rect>
      <x>630</x>
@@ -351,7 +351,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_9">
+  <widget class="QTextBrowser" name="phone">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -361,7 +361,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_10">
+  <widget class="QTextBrowser" name="birthdate">
    <property name="geometry">
     <rect>
      <x>450</x>
@@ -371,7 +371,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_11">
+  <widget class="QTextBrowser" name="mail">
    <property name="geometry">
     <rect>
      <x>450</x>
