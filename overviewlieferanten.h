@@ -20,6 +20,12 @@ public:
 private slots:
     void on_back_to_main_clicked();
 
+    void on_pushButton_anlegen_clicked();
+
+    void on_pushButton_2_bearbeiten_clicked();
+
+    void on_pushButton_3_loeschen_clicked();
+
 private:
     Ui::OverviewLieferanten* ui;
 
