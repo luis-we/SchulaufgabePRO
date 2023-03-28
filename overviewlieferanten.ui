@@ -139,6 +139,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -161,6 +164,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -185,6 +191,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
@@ -207,6 +216,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -231,6 +243,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
@@ -253,6 +268,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">
@@ -277,6 +295,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
@@ -299,6 +320,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
