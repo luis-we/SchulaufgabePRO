@@ -20,6 +20,10 @@ public:
 private slots:
     void on_back_to_main_clicked();
 
+    void on_save_clicked();
+
+    void on_reset_clicked();
+
 private:
     Ui::OverviewKunde* ui;
 
