@@ -19,6 +19,8 @@ public:
 
 private slots:
     void on_back_to_main_clicked();
+    void searchCustomer(const QString& searchText);
+    void on_next_button_clicked();
 
 private:
     Ui::OverviewBestellungen* ui;
