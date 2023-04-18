@@ -26,6 +26,7 @@ private:
     Ui::OverviewBestellungen* ui;
 
     MainWindow* parent;
+    int customerId; // Neue Variable für customerId
 };
 
 #endif // OVERVIEWBESTELLUNGEN_H
