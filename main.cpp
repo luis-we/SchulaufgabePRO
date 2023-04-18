@@ -6,6 +6,9 @@
 #include "overviewbestellungen.h"
 
 #include <QApplication>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <QDebug>
 #include <QStackedWidget>
 #include <QVBoxLayout>
 
@@ -33,8 +36,25 @@ int main(int argc, char* argv[])
     stack->addWidget(overviewBestellungen);
 
     stack->setCurrentWidget(mainWindow);
-
     stack->show();
+
+
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName("localhost");
+    db.setPort(3306);
+    db.setDatabaseName("schlumpfshop3");
+    db.setUserName("root");
+    db.setPassword("");
+
+    if (db.open()) {
+        qDebug() << "Erfolgreich mit der MySQL-Datenbank verbunden!";
+    } else {
+        qDebug() << "Fehler beim Verbinden mit der MySQL-Datenbank:";
+        qDebug() << db.lastError().text();
+    }
+
+
 
     return a.exec();
 }

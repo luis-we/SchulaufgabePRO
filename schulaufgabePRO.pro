@@ -14,6 +14,7 @@ SOURCES += \
     mainwindow.cpp \
     overviewartikel.cpp \
     overviewbestellungen.cpp \
+    overviewbestellungen_bestellung.cpp \
     overviewkunde.cpp \
     overviewlieferanten.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     mainwindow.h \
     overviewartikel.h \
     overviewbestellungen.h \
+    overviewbestellungen_bestellung.h \
     overviewkunde.h \
     overviewlieferanten.h
 
@@ -28,6 +30,7 @@ FORMS += \
     mainwindow.ui \
     overviewartikel.ui \
     overviewbestellungen.ui \
+    overviewbestellungen_bestellung.ui \
     overviewkunde.ui \
     overviewlieferanten.ui
 

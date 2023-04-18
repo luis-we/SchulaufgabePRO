@@ -17,6 +17,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QStackedWidget* MainWindow::GetStack()
+{
+    return this->stack;
+}
 
 void MainWindow::back_to_main()
 {
