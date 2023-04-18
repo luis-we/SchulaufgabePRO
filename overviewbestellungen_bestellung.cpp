@@ -1,14 +1,28 @@
+// overviewbestellungen_bestellung.cpp
 #include "overviewbestellungen_bestellung.h"
 #include "ui_overviewbestellungen_bestellung.h"
 
-overviewbestellungen_bestellung::overviewbestellungen_bestellung(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::overviewbestellungen_bestellung)
+#include "mainwindow.h"
+
+
+OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId) :
+    ui(new Ui::overviewbestellungen_bestellung),
+    m_customerId(customerId)
 {
     ui->setupUi(this);
+
+    // Den customerId im Label_ID anzeigen
+    ui->ID_Label->setText(QString::number(customerId));
 }
 
-overviewbestellungen_bestellung::~overviewbestellungen_bestellung()
+OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
 {
     delete ui;
 }
+
+
+void OverviewBestellungen_Bestellung::on_back_clicked()
+{
+
+}
+
