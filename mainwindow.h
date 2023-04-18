@@ -17,6 +17,7 @@ public:
     ~MainWindow();
 
     void back_to_main();
+    QStackedWidget* GetStack();
 
 private slots:
     void on_overview_kunden_clicked();
