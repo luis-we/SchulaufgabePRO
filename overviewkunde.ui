@@ -50,16 +50,6 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QListView" name="listView">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>150</y>
-     <width>381</width>
-     <height>571</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QTextBrowser" name="salutation">
    <property name="geometry">
     <rect>
@@ -380,6 +370,35 @@
      <height>31</height>
     </rect>
    </property>
+  </widget>
+  <widget class="QScrollArea" name="scrollArea">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>154</y>
+     <width>411</width>
+     <height>601</height>
+    </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOn</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAsNeeded</enum>
+   </property>
+   <property name="widgetResizable">
+    <bool>true</bool>
+   </property>
+   <widget class="QWidget" name="customers">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>392</width>
+      <height>599</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>

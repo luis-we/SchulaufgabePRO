@@ -2,11 +2,25 @@
 #include "ui_overviewkunde.h"
 #include "mainwindow.h"
 
+#include <QVBoxLayout>
+#include <QLabel>
+
 OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewKunde)
 {
     ui->setupUi(this);
 
     this->parent = parent;
+
+    QVBoxLayout* customerLayout = new QVBoxLayout(this);
+
+    for(int i = 0; i < 50; i++) {
+        QLabel* customerLabel = new QLabel(this);
+
+        customerLabel->setText("Test: " + QString::number(i));
+        customerLayout->addWidget(customerLabel);
+    }
+
+    ui->customers->setLayout(customerLayout);
 }
 
 OverviewKunde::~OverviewKunde()
