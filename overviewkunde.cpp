@@ -7,11 +7,25 @@
 
 
 
+#include <QVBoxLayout>
+#include <QLabel>
+
 OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewKunde)
 {
     ui->setupUi(this);
 
     this->parent = parent;
+
+    QVBoxLayout* customerLayout = new QVBoxLayout(this);
+
+    for(int i = 0; i < 50; i++) {
+        QLabel* customerLabel = new QLabel(this);
+
+        customerLabel->setText("Test: " + QString::number(i));
+        customerLayout->addWidget(customerLabel);
+    }
+
+    ui->customers->setLayout(customerLayout);
 
     QSqlQuery query;
     query.prepare("SELECT * FROM kunden");
@@ -26,15 +40,8 @@ OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::O
     // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
     while (query.next()) {
         QString customerName = query.value("Name").toString();
-        QString customerAddress = query.value("Straße").toString() + " " + query.value("Hausnummer").toString();
-        QString customerCity = query.value("ID_Ort").toString();
-        QString customerPhone = query.value("Telefon").toString();
-        QString customerId = query.value("ID_Kunde").toString();
 
-        qDebug() << "Fehler beim Suchen nach Eis:";
-        QMessageBox *msgBox = new QMessageBox(this);
-        msgBox->setText(customerName);
-        msgBox->show();
+        qDebug() << "Kunde " << customerName << "erfolgreich geladen!";
     }
 }
 
