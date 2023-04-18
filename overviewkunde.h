@@ -28,6 +28,7 @@ private:
     Ui::OverviewKunde* ui;
 
     MainWindow* parent;
+
 };
 
 #endif // OVERVIEWKUNDE_H
