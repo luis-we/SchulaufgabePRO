@@ -2,6 +2,7 @@
 #include "ui_overviewkunde.h"
 #include "mainwindow.h"
 
+
 OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewKunde)
 {
     ui->setupUi(this);
