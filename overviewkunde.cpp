@@ -2,8 +2,10 @@
 #include "ui_overviewkunde.h"
 #include "mainwindow.h"
 #include "listitem.h"
+#include "qsqlerror.h"
 
-#include <listitem.h>
+#include <QSqlQuery>
+#include <QMessageBox>
 #include <QVBoxLayout>
 #include <QPushButton>
 
@@ -31,7 +33,24 @@ OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::O
         customers->push_back(customer);
     }
 
-    ui->customers->setLayout(this->m_layout);
+    ui->customers->setLayout(customerLayout);
+
+    QSqlQuery query;
+    query.prepare("SELECT * FROM kunden");
+
+    if (!query.exec()) {
+        // Fehler beim Ausführen der Abfrage
+        qDebug() << "Fehler beim Suchen nach Kunden:";
+        qDebug() << query.lastError().text();
+        return;
+    }
+
+    // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
+    while (query.next()) {
+        QString customerName = query.value("Name").toString();
+
+        qDebug() << "Kunde " << customerName << "erfolgreich geladen!";
+    }
 }
 
 OverviewKunde::~OverviewKunde()
