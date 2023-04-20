@@ -2,8 +2,10 @@
 #define OVERVIEWKUNDE_H
 
 #include "mainwindow.h"
+#include "listitem.h"
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 namespace Ui {
 class OverviewKunde;
@@ -24,10 +26,13 @@ private slots:
 
     void on_reset_clicked();
 
+    void on_list_item_clicked(ListItem<int>* item);
+
 private:
     Ui::OverviewKunde* ui;
 
     MainWindow* parent;
+    QVBoxLayout* m_layout;
 };
 
 #endif // OVERVIEWKUNDE_H
