@@ -26,7 +26,7 @@ private slots:
 
     void on_reset_clicked();
 
-    void on_list_item_clicked(ListItem<int>* item);
+    void on_list_item_clicked(ListItem<QString>* item);
 
 private:
     Ui::OverviewKunde* ui;

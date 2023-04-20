@@ -19,38 +19,32 @@ OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::O
 
     this->m_layout = new QVBoxLayout(this);
 
-    vector<ListItem<int>*>* customers = new vector<ListItem<int>*>();
-
-    for(int i = 0; i < 50; i++) {
-        QPushButton* button = new QPushButton(this);
-        ListItem<int>* customer = new ListItem<int>(&i, button);
-
-        connect(button, &QPushButton::clicked, [this, customer](){ this->on_list_item_clicked(customer); });
-
-        button->setText("Test" + QString::number(i));
-
-        this->m_layout->addWidget(button);
-        customers->push_back(customer);
-    }
-
-    ui->customers->setLayout(customerLayout);
+    vector<ListItem<QString>*>* customers = new vector<ListItem<QString>*>();
 
     QSqlQuery query;
     query.prepare("SELECT * FROM kunden");
 
     if (!query.exec()) {
-        // Fehler beim Ausführen der Abfrage
-        qDebug() << "Fehler beim Suchen nach Kunden:";
-        qDebug() << query.lastError().text();
+        qDebug() << "Fehler beim Suchen nach Kunden: " << query.lastError().text();
         return;
     }
 
-    // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
     while (query.next()) {
+        QPushButton* button = new QPushButton(this);
+
         QString customerName = query.value("Name").toString();
 
-        qDebug() << "Kunde " << customerName << "erfolgreich geladen!";
+        ListItem<QString>* customer = new ListItem<QString>(&customerName, button);
+
+        connect(button, &QPushButton::clicked, [this, customer](){ this->on_list_item_clicked(customer); });
+
+        button->setText(customerName);
+
+        this->m_layout->addWidget(button);
+        customers->push_back(customer);
     }
+
+    ui->customers->setLayout(this->m_layout);
 }
 
 OverviewKunde::~OverviewKunde()
@@ -58,7 +52,7 @@ OverviewKunde::~OverviewKunde()
     delete ui;
 }
 
-void OverviewKunde::on_list_item_clicked(ListItem<int>* item)
+void OverviewKunde::on_list_item_clicked(ListItem<QString>* item)
 {
     qDebug() << "Clicked: " << item->GetButton()->text();
     this->m_layout->removeWidget(item->GetButton());
