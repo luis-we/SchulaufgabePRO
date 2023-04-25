@@ -61,6 +61,7 @@ void OverviewBestellungen::searchCustomer(const QString &text)
     }
 }
 
+
 void OverviewBestellungen::on_next_button_clicked()
 {
     if (ui->customer_list->selectedItems().empty()) {
@@ -69,11 +70,21 @@ void OverviewBestellungen::on_next_button_clicked()
         // customerId des ausgewählten Elements holen
         int selectedCustomerId = ui->customer_list->selectedItems()[0]->data(Qt::UserRole).toInt();
 
+        
         QStackedWidget* stack = this->parent->GetStack();
-        OverviewBestellungen_Bestellung* bestellung = new OverviewBestellungen_Bestellung(selectedCustomerId, stack);
+
+        // prüfen, ob bereits ein Widget für die Bestellung existiert, wenn ja, löschen
+        if (currentBestellung) {
+            stack->removeWidget(currentBestellung);
+            delete currentBestellung;
+            currentBestellung = nullptr;
+        }
+
+        // neues Widget für die Bestellung erstellen
+        currentBestellung = new OverviewBestellungen_Bestellung(selectedCustomerId, stack);
 
         // Widget bestellung hinzufügen
-        stack->addWidget(bestellung);
+        stack->addWidget(currentBestellung);
 
         // neues Fenster öffnen
         stack->setCurrentIndex(5);
