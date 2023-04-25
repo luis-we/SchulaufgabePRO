@@ -1,13 +1,14 @@
 // overviewbestellungen_bestellung.cpp
 #include "overviewbestellungen_bestellung.h"
 #include "ui_overviewbestellungen_bestellung.h"
+#include <QStackedWidget>
 
-#include "mainwindow.h"
 
-
-OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId) :
+OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId, QStackedWidget* stack, QWidget *parent) :
+    QWidget(parent),
     ui(new Ui::overviewbestellungen_bestellung),
-    m_customerId(customerId)
+    m_customerId(customerId),
+    m_stack(stack)
 {
     ui->setupUi(this);
 
@@ -23,6 +24,6 @@ OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
 
 void OverviewBestellungen_Bestellung::on_back_clicked()
 {
-
+    m_stack->setCurrentIndex(4);
 }
 
