@@ -1,7 +1,9 @@
 #ifndef OVERVIEWBESTELLUNGEN_BESTELLUNG_H
 #define OVERVIEWBESTELLUNGEN_BESTELLUNG_H
 
+#include "mainwindow.h"
 #include <QWidget>
+
 
 namespace Ui {
 class overviewbestellungen_bestellung;
@@ -14,7 +16,7 @@ class OverviewBestellungen_Bestellung : public QWidget
     Q_OBJECT
 
 public:
-    explicit OverviewBestellungen_Bestellung(int customerId);
+    explicit OverviewBestellungen_Bestellung(int customerId, QStackedWidget* stack, QWidget *parent = nullptr);
     ~OverviewBestellungen_Bestellung();
 
 private slots:
@@ -23,7 +25,7 @@ private slots:
 private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
-    OverviewBestellungen *m_parent;
+     QStackedWidget* m_stack;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H
