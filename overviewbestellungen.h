@@ -2,6 +2,7 @@
 #define OVERVIEWBESTELLUNGEN_H
 
 #include "mainwindow.h"
+#include "overviewbestellungen_bestellung.h"
 
 #include <QWidget>
 
@@ -25,8 +26,9 @@ private slots:
 private:
     Ui::OverviewBestellungen* ui;
 
-    MainWindow* parent;
-    int customerId; // Neue Variable für customerId
+    MainWindow* parent;                                             // Pointer auf MainWindow
+    int customerId;                                                 // Neue Variable für customerId
+    OverviewBestellungen_Bestellung* currentBestellung = nullptr;   // prüfvariable für Kundenbestellung
 };
 
 #endif // OVERVIEWBESTELLUNGEN_H
