@@ -70,7 +70,7 @@ void OverviewBestellungen::on_next_button_clicked()
         int selectedCustomerId = ui->customer_list->selectedItems()[0]->data(Qt::UserRole).toInt();
 
         QStackedWidget* stack = this->parent->GetStack();
-        OverviewBestellungen_Bestellung* bestellung = new OverviewBestellungen_Bestellung(selectedCustomerId);
+        OverviewBestellungen_Bestellung* bestellung = new OverviewBestellungen_Bestellung(selectedCustomerId, stack);
 
         // Widget bestellung hinzufügen
         stack->addWidget(bestellung);
