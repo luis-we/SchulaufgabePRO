@@ -29,14 +29,25 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>30</y>
-     <width>121</width>
-     <height>31</height>
+     <x>0</x>
+     <y>20</y>
+     <width>851</width>
+     <height>51</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>20</pointsize>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
    </property>
    <property name="text">
     <string>Lieferanten</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label_1">
@@ -139,6 +150,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
@@ -161,6 +175,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -185,6 +202,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_5">
    <property name="geometry">
@@ -207,6 +227,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -231,6 +254,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_7">
    <property name="geometry">
@@ -253,6 +279,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_8">
@@ -277,6 +306,9 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
   </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
@@ -299,6 +331,9 @@
      <width>341</width>
      <height>31</height>
     </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_10">
