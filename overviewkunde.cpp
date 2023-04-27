@@ -11,6 +11,7 @@
 
 using namespace std;
 
+
 OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewKunde)
 {
     ui->setupUi(this);
