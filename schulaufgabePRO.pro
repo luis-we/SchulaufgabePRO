@@ -21,11 +21,8 @@ SOURCES += \
     overviewlieferanten.cpp
 
 HEADERS += \
-<<<<<<< HEAD
     listitem.h \
-=======
     kunde.h \
->>>>>>> 73a81dee6fdc791b97039815d5fe199b2f1dd11e
     mainwindow.h \
     overviewartikel.h \
     overviewbestellungen.h \
