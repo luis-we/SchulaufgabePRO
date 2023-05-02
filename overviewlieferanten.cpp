@@ -43,7 +43,6 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
         this->layout()->addWidget(button);
         this->lieferanten->push_back(lieferant);
     }
-
 }
 
 OverviewLieferanten::~OverviewLieferanten()
@@ -60,7 +59,6 @@ void OverviewLieferanten::on_back_to_main_clicked()
 {
     this->parent->back_to_main(); //Zurück zum Hauptmenü Button
 }
-
 
 void OverviewLieferanten::on_pushButton_anlegen_clicked()
 {
@@ -80,9 +78,12 @@ void OverviewLieferanten::on_pushButton_anlegen_clicked()
     query_insert.bindValue(":ID", ui->textBrowser_lieferantenid->toPlainText());
 
     query_insert.exec(); //Führt Query aus
-    
+    //Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
+    if (!query_insert.exec()) {
+        qDebug() << "Fehler beim Anlegen eines Lieferanten: " << query_insert.lastError().text();
+        return;
+    }
 }
-
 
 void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
 {
@@ -101,9 +102,12 @@ void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
     query_update.bindValue(":ID", ui->textBrowser_lieferantenid->toPlainText());
 
     query_update.exec(); //Führt Query aus
-    
+    //Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
+    if (!query_update.exec()) {
+        qDebug() << "Fehler beim Bearbeiten eines Lieferanten: " << query_update.lastError().text();
+        return;
+    }  
 }
-
 
 void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
 {
@@ -114,6 +118,9 @@ void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
     query_delete.bindValue(":ID", ui->textBrowser_lieferantenid->toPlainText());
 
     query_delete.exec(); //Führt Query aus
-
+    //Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
+    if (!query_delete.exec()) {
+        qDebug() << "Fehler beim LÖSCHEN eines Lieferanten: " << query_delete.lastError().text();
+        return;
+    }
 }
-
