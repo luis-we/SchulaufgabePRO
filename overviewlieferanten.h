@@ -1,9 +1,11 @@
 #ifndef OVERVIEWLIEFERANTEN_H
 #define OVERVIEWLIEFERANTEN_H
 
+#include "listitem.h"
 #include "mainwindow.h"
 
 #include <QWidget>
+#include <QVBoxLayout>
 
 namespace Ui {
 class OverviewLieferanten;
@@ -18,6 +20,8 @@ public:
     ~OverviewLieferanten();
 
 private slots:
+    void on_list_item_clicked(ListItem<QString>* item);
+
     void on_back_to_main_clicked();
 
     void on_pushButton_anlegen_clicked();
@@ -30,6 +34,7 @@ private:
     Ui::OverviewLieferanten* ui;
 
     MainWindow* parent;
+    QVBoxLayout* layout;
 };
 
 #endif // OVERVIEWLIEFERANTEN_H
