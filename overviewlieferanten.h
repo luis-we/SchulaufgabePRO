@@ -7,6 +7,8 @@
 #include <QWidget>
 #include <QVBoxLayout>
 
+using namespace std;
+
 namespace Ui {
 class OverviewLieferanten;
 }
@@ -32,9 +34,9 @@ private slots:
 
 private:
     Ui::OverviewLieferanten* ui;
-
+    vector<ListItem<QString>*>* lieferanten;
     MainWindow* parent;
-    QVBoxLayout* layout;
+    QVBoxLayout* m_layout;
 };
 
 #endif // OVERVIEWLIEFERANTEN_H

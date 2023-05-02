@@ -16,9 +16,9 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
 
     this->parent = parent; //Übergibt parent an private Variable
 
-    this->layout() = new QVBoxLayout(this);
+    this->m_layout = new QVBoxLayout(this);
 
-    vector<ListItem<QString>*>* lieferanten = new vector<ListItem<QString>*>();
+    this->lieferanten = new vector<ListItem<QString>*>();
 
     QSqlQuery query;
     query.prepare("SELECT * FROM lieferanten"); //SQL Abfrage nach allen Lieferanten aus Tabelle
@@ -41,7 +41,7 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
         button->setText(lieferantName);
 
         this->layout()->addWidget(button);
-        lieferanten->push_back(lieferanten);
+        this->lieferanten->push_back(lieferant);
     }
 
 }
@@ -54,8 +54,6 @@ OverviewLieferanten::~OverviewLieferanten()
 void OverviewLieferanten::on_list_item_clicked(ListItem<QString>* item)
 {
     qDebug() << "Clicked: " << item->GetButton()->text();
-    this->layout->removeWidget(item->GetButton());
-    delete item->GetButton();
 }
 
 void OverviewLieferanten::on_back_to_main_clicked()
