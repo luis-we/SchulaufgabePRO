@@ -1,18 +1,20 @@
 #include "kunde.h"
-// Konstruktoren
+#include <QString>
 
+// Konstruktoren
 Kunde::Kunde()
 {
 
 }
 
-Kunde::Kunde(int id, int anrede, std::string name, std::string strasse,
-             int hausnr, int ort, int telefon, std::string geburtsdatum,
-             std::string email, std::string titel)
+Kunde::Kunde(int id, int anrede, QString name, QString vorname, QString strasse,
+             QString hausnr, int ort, QString telefon, QDate geburtsdatum,
+             QString email, QString titel)
 {
     this->id = id;
     setAnrede(anrede);
     setName(name);
+    setVorname(vorname);
     setStrasse(strasse);
     setHausNr(hausnr);
     setOrt(ort);
@@ -23,23 +25,27 @@ Kunde::Kunde(int id, int anrede, std::string name, std::string strasse,
 }
 
 // setter
-
 void Kunde::setAnrede(int anrede)
 {
     this->anrede = anrede;
 }
 
-void Kunde::setName(std::string name)
+void Kunde::setName(QString name)
 {
     this->name = name;
 }
 
-void Kunde::setStrasse(std::string strasse)
+void Kunde::setVorname(QString vorname)
+{
+    this->vorname = vorname;
+}
+
+void Kunde::setStrasse(QString strasse)
 {
     this->strasse = strasse;
 }
 
-void Kunde::setHausNr(int hausnr)
+void Kunde::setHausNr(QString hausnr)
 {
     this->hausnummer = hausnr;
 }
@@ -49,44 +55,54 @@ void Kunde::setOrt(int ort)
     this->ort = ort;
 }
 
-void Kunde::setTelefon(int telefon)
+void Kunde::setTelefon(QString telefon)
 {
     this->telefon = telefon;
 }
 
-void Kunde::setGeburtsdatum(std::string geburtsdatum)
+void Kunde::setGeburtsdatum(QDate geburtsdatum)
 {
     this->geburtsdatum = geburtsdatum;
 }
 
-void Kunde::setEmail(std::string email)
+void Kunde::setEmail(QString email)
 {
     this->email = email;
 }
 
-void Kunde::setTitel(std::string titel)
+void Kunde::setTitel(QString titel)
 {
     this->titel = titel;
 }
 
 
 // getter
+int Kunde::getID()
+{
+    return this->id;
+}
+
 int Kunde::getAnrede()
 {
     return this->anrede;
 }
 
-std::string Kunde::getName()
+QString Kunde::getName()
 {
     return this->name;
 }
 
-std::string Kunde::getStrasse()
+QString Kunde::getVorname()
+{
+    return this->vorname;
+}
+
+QString Kunde::getStrasse()
 {
     return this->strasse;
 }
 
-int Kunde::getHausNr()
+QString Kunde::getHausNr()
 {
     return this->hausnummer;
 }
@@ -96,24 +112,29 @@ int Kunde::getOrt()
     return this->ort;
 }
 
-int Kunde::getTelefon()
+QString Kunde::getTelefon()
 {
     return this->telefon;
 }
 
-std::string Kunde::getGeburtsdatum()
+QDate Kunde::getGeburtsdatum()
 {
-    return this->getGeburtsdatum();
+    return this->geburtsdatum;
 }
 
-std::string Kunde::getEmail()
+QString Kunde::getEmail()
 {
     return this->email;
 }
 
-std::string Kunde::getTitel()
+QString Kunde::getTitel()
 {
     return this->titel;
+}
+
+QString Kunde::getDisplayText()
+{
+    return this->name + " " + this->vorname;
 }
 
 
