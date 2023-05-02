@@ -50,19 +50,6 @@
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="salutation">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>170</y>
-     <width>161</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QTextBrowser" name="name">
    <property name="geometry">
     <rect>
@@ -101,16 +88,6 @@
    <property name="readOnly">
     <bool>false</bool>
    </property>
-  </widget>
-  <widget class="QTextBrowser" name="ort">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>450</y>
-     <width>221</width>
-     <height>31</height>
-    </rect>
-   </property>
    <property name="readOnly">
     <bool>false</bool>
    </property>
@@ -118,14 +95,14 @@
   <widget class="QLabel" name="salutation_label">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>530</x>
      <y>150</y>
-     <width>161</width>
-     <height>16</height>
+     <width>131</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
-    <string>Anrede</string>
+    <string>Anrede*</string>
    </property>
   </widget>
   <widget class="QLabel" name="name_label">
@@ -138,7 +115,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Name</string>
+    <string>Name*</string>
    </property>
   </widget>
   <widget class="QLabel" name="firstname_label">
@@ -151,7 +128,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Vorname</string>
+    <string>Vorname*</string>
    </property>
   </widget>
   <widget class="QLabel" name="street_label">
@@ -164,7 +141,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Straße</string>
+    <string>Straße*</string>
    </property>
   </widget>
   <widget class="QLabel" name="ort_label">
@@ -177,15 +154,15 @@
     </rect>
    </property>
    <property name="text">
-    <string>Ort</string>
+    <string>Ort*</string>
    </property>
   </widget>
   <widget class="QPushButton" name="save">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>720</y>
-     <width>121</width>
+     <x>630</x>
+     <y>710</y>
+     <width>161</width>
      <height>31</height>
     </rect>
    </property>
@@ -196,9 +173,9 @@
   <widget class="QPushButton" name="reset">
    <property name="geometry">
     <rect>
-     <x>650</x>
-     <y>720</y>
-     <width>121</width>
+     <x>450</x>
+     <y>750</y>
+     <width>161</width>
      <height>31</height>
     </rect>
    </property>
@@ -258,7 +235,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Telefon</string>
+    <string>Telefon*</string>
    </property>
   </widget>
   <widget class="QLabel" name="streetnr_label">
@@ -271,7 +248,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Nr.</string>
+    <string>Nr.*</string>
    </property>
   </widget>
   <widget class="QLabel" name="birthdate_label">
@@ -284,15 +261,15 @@
     </rect>
    </property>
    <property name="text">
-    <string>Geburtsdatum</string>
+    <string>Geburtsdatum*</string>
    </property>
   </widget>
   <widget class="QLabel" name="titel_label">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>680</x>
      <y>150</y>
-     <width>161</width>
+     <width>111</width>
      <height>20</height>
     </rect>
    </property>
@@ -310,7 +287,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Email</string>
+    <string>Email*</string>
    </property>
   </widget>
   <widget class="QLabel" name="plz_label">
@@ -340,6 +317,9 @@
    </property>
   </widget>
   <widget class="QTextBrowser" name="plz">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>690</x>
@@ -349,15 +329,15 @@
     </rect>
    </property>
    <property name="readOnly">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
   </widget>
   <widget class="QTextBrowser" name="titel">
    <property name="geometry">
     <rect>
-     <x>630</x>
+     <x>680</x>
      <y>170</y>
-     <width>161</width>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -376,16 +356,6 @@
    </property>
    <property name="readOnly">
     <bool>false</bool>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="birthdate">
-   <property name="geometry">
-    <rect>
-     <x>450</x>
-     <y>590</y>
-     <width>341</width>
-     <height>31</height>
-    </rect>
    </property>
    <property name="readOnly">
     <bool>false</bool>
@@ -410,7 +380,7 @@
      <x>9</x>
      <y>154</y>
      <width>411</width>
-     <height>601</height>
+     <height>631</height>
     </rect>
    </property>
    <property name="verticalScrollBarPolicy">
@@ -428,10 +398,101 @@
       <x>0</x>
       <y>0</y>
       <width>392</width>
-      <height>599</height>
+      <height>629</height>
      </rect>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="remove">
+   <property name="geometry">
+    <rect>
+     <x>630</x>
+     <y>750</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Löschen</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="create">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>710</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Neu</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="id">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>170</y>
+     <width>61</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="id_label">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>150</y>
+     <width>81</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>ID</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="salutation">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>170</y>
+     <width>131</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QDateEdit" name="birthdate">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>590</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="ort">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>450</y>
+     <width>221</width>
+     <height>31</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

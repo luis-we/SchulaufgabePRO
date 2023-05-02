@@ -11,6 +11,7 @@ CONFIG += c++17
 
 SOURCES += \
     listitem.cpp \
+    kunde.cpp \
     main.cpp \
     mainwindow.cpp \
     overviewartikel.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 
 HEADERS += \
     listitem.h \
+    kunde.h \
     mainwindow.h \
     overviewartikel.h \
     overviewbestellungen.h \
