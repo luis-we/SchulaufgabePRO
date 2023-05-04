@@ -48,8 +48,8 @@
      <height>101</height>
     </rect>
    </property>
-   <property name="placeholderText">
-    <string>Artikelliste</string>
+   <property name="placeholderText" stdset="0">
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="LabelArtikel">
