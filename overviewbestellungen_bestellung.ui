@@ -26,7 +26,7 @@
     <string>Back</string>
    </property>
   </widget>
-  <widget class="QTextEdit" name="artiklSuche">
+  <widget class="QLineEdit" name="artikelSuche">
    <property name="geometry">
     <rect>
      <x>120</x>
