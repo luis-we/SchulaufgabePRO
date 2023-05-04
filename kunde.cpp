@@ -4,7 +4,7 @@
 // Konstruktoren
 Kunde::Kunde()
 {
-
+    this->id = 0;
 }
 
 Kunde::Kunde(int id, int anrede, QString name, QString vorname, QString strasse,

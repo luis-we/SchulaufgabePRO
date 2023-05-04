@@ -9,6 +9,7 @@
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include <QVariant>
 
 using namespace std;
 
@@ -27,12 +28,56 @@ OverviewKunde::OverviewKunde(MainWindow* parent) : QWidget(parent), ui(new Ui::O
     ui->create->setDisabled(true);
     ui->remove->setDisabled(true);
 
+    LoadSalutations();
+    LoadLocations();
     LoadCustomers();
+
+    ClearForm();
 }
 
 OverviewKunde::~OverviewKunde()
 {
     delete ui;
+}
+
+void OverviewKunde::LoadSalutations()
+{
+    QSqlQuery query;
+
+    query.prepare("SELECT * FROM anrede");
+
+    if (!query.exec()) {
+        qDebug() << "Fehler bei der Suchen nach Anreden: " << query.lastError().text();
+        return;
+    }
+
+    while (query.next()) {
+        int salutation_id = query.value("ID_Anrede").toInt();
+        QString salutation = query.value("Anrede").toString();
+
+        ui->salutation->addItem(salutation, salutation_id);
+    }
+}
+
+void OverviewKunde::LoadLocations()
+{
+    QSqlQuery query;
+
+    query.prepare("SELECT * FROM ort");
+
+    if (!query.exec()) {
+        qDebug() << "Fehler bei der Suchen nach Orten: " << query.lastError().text();
+        return;
+    }
+
+    while (query.next()) {
+        int ort_id = query.value("ID_Ort").toInt();
+        QString ort = query.value("Ort").toString();
+
+        ui->ort->addItem(ort, ort_id);
+    }
+
+    ui->birthdate->setDate(QDate::currentDate());
 }
 
 void OverviewKunde::DeleteCustomer()
@@ -72,50 +117,81 @@ void OverviewKunde::SelectCustomer(ListItem<Kunde>* customer)
 
 void OverviewKunde::LoadCustomer(Kunde* customer) {
     ui->id->setText(QString::number(customer->getID()));
-    //ui->salutation->setText("Anrede");
+    ui->salutation->setCurrentIndex(ui->salutation->findData(customer->getAnrede()));
     ui->titel->setText(customer->getTitel());
     ui->name->setText(customer->getName());
     ui->firstname->setText(customer->getVorname());
     ui->street->setText(customer->getStrasse());
     ui->streetnr->setText(customer->getHausNr());
-    //ui->ort->setText("Ort");
-    //ui->plz->setText("PLZ");
+    ui->ort->setCurrentIndex(ui->ort->findData(customer->getOrt()));
     ui->phone->setText(customer->getTelefon());
-    ui->birthdate->setDate(customer->getGeburtsdatum());
+
+    if(customer->getGeburtsdatum().isValid()) {
+        ui->birthdate->setDate(customer->getGeburtsdatum());
+    }
+    else {
+        ui->birthdate->setDate(QDate::currentDate());
+    }
+
     ui->mail->setText(customer->getEmail());
+}
+
+QString OverviewKunde::FetchPLZFromLocation(int location) {
+    QString plz = "";
+
+    QSqlQuery query;
+
+    query.prepare("SELECT PLZ FROM ort WHERE ID_Ort = " + QString::number(location));
+
+    if (!query.exec()) {
+        qDebug() << "Fehler bei der Suchen nach PLZ: " << query.lastError().text();
+        return plz;
+    }
+
+    while (query.next()) {
+        plz = query.value("PLZ").toString();
+    }
+
+    return plz;
 }
 
 void OverviewKunde::ClearForm() {
     ui->id->clear();
-    ui->salutation->clear();
+    ui->salutation->setCurrentIndex(-1);
     ui->titel->clear();
     ui->name->clear();
     ui->firstname->clear();
     ui->street->clear();
     ui->streetnr->clear();
-    ui->ort->clear();
+    ui->ort->setCurrentIndex(-1);
     ui->plz->clear();
     ui->phone->clear();
-    ui->birthdate->clear();
+    ui->birthdate->setDate(QDate::currentDate());
     ui->mail->clear();
 }
 
-void OverviewKunde::SaveCustomer()
+void OverviewKunde::SaveCustomer(bool created)
 {
     Kunde* customer = m_selectedCustomer->GetValue();
 
-    //customer->setAnrede();
+    customer->setAnrede(ui->salutation->currentData().value<int>());
     customer->setTitel(ui->titel->toPlainText());
     customer->setName(ui->name->toPlainText());
     customer->setVorname(ui->firstname->toPlainText());
     customer->setStrasse(ui->street->toPlainText());
     customer->setHausNr(ui->streetnr->toPlainText());
-    //customer->setOrt();
+    customer->setOrt(ui->ort->currentData().value<int>());
     customer->setTelefon(ui->phone->toPlainText());
     customer->setGeburtsdatum(ui->birthdate->date());
     customer->setEmail(ui->mail->toPlainText());
 
-    //customer->save();
+    if(created) {
+        //customer->create();
+        LoadCustomer(customer);
+    }
+    else {
+        //customer->save();
+    }
 
     m_selectedCustomer->GetButton()->setText(customer->getDisplayText());
 }
@@ -150,6 +226,10 @@ void OverviewKunde::LoadCustomers()
     }
 }
 
+bool OverviewKunde::VerifyInput() {
+    return true;
+}
+
 void OverviewKunde::on_list_item_clicked(ListItem<Kunde>* item)
 {
     SelectCustomer(item);
@@ -163,14 +243,19 @@ void OverviewKunde::on_back_to_main_clicked()
 
 void OverviewKunde::on_save_clicked()
 { 
-    // TODO: Funktion für eingabe überprüfung
+    if(!VerifyInput()) {
+        return;
+    }
+
+    bool created = false;
 
     if(m_selectedCustomer == nullptr) {
         Kunde* customer = new Kunde();
         m_selectedCustomer = CreateCustomerItem(customer);
+        created = true;
     }
 
-    SaveCustomer();
+    SaveCustomer(created);
 }
 
 void OverviewKunde::on_reset_clicked()
@@ -204,5 +289,18 @@ void OverviewKunde::on_remove_clicked()
 
     ui->create->setDisabled(true);
     ui->remove->setDisabled(true);
+}
+
+
+void OverviewKunde::on_ort_currentIndexChanged(int index)
+{
+    if(index == -1) {
+        ui->plz->clear();
+        return;
+    }
+
+    int location = ui->ort->currentData().value<int>();
+
+    ui->plz->setText(FetchPLZFromLocation(location));
 }
 

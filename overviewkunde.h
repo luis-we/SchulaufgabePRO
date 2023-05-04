@@ -35,13 +35,19 @@ private slots:
 
     void on_remove_clicked();
 
+    void on_ort_currentIndexChanged(int index);
+
 private:
     void LoadCustomers();
     void LoadCustomer(Kunde* customer);
     void SelectCustomer(ListItem<Kunde>* customer);
-    void SaveCustomer();
+    void SaveCustomer(bool created);
     void ClearForm();
     void DeleteCustomer();
+    void LoadSalutations();
+    void LoadLocations();
+    bool VerifyInput();
+    QString FetchPLZFromLocation(int location);
 
     ListItem<Kunde>* CreateCustomerItem(Kunde* customer);
 
