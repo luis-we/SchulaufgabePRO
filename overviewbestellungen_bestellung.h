@@ -5,7 +5,6 @@
 #include "overviewbestellungen_liste.h"
 #include <QWidget>
 
-
 namespace Ui {
 class overviewbestellungen_bestellung;
 }
@@ -24,8 +23,6 @@ private slots:
     void on_back_clicked();
     void searchArtikel(const QString& searchText);
     void on_orders_clicked();
-
-    void on_artiklSuche_textChanged();
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
