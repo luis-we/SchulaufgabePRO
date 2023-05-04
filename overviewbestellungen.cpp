@@ -13,6 +13,7 @@ OverviewBestellungen::OverviewBestellungen(MainWindow* parent) : QWidget(parent)
     this->parent = parent;
 
     connect(ui->search_field, &QLineEdit::textChanged, this, &OverviewBestellungen::searchCustomer);
+
 }
 
 OverviewBestellungen::~OverviewBestellungen()

@@ -23,8 +23,9 @@ public:
 private slots:
     void on_back_clicked();
     void searchArtikel(const QString& searchText);
-
     void on_orders_clicked();
+
+    void on_artiklSuche_textChanged();
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
