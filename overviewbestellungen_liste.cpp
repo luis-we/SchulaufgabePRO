@@ -11,6 +11,7 @@ overviewbestellungen_liste::overviewbestellungen_liste(QWidget *parent) :
 overviewbestellungen_liste::~overviewbestellungen_liste()
 {
     delete ui;
+    
 }
 
 void overviewbestellungen_liste::on_back_clicked()
