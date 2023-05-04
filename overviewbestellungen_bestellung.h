@@ -28,8 +28,7 @@ private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
     QStackedWidget* m_stack;
-    overviewbestellungen_liste* m_liste;
-    
+    overviewbestellungen_liste* m_liste = nullptr;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H

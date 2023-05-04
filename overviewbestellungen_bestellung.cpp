@@ -74,6 +74,14 @@ void OverviewBestellungen_Bestellung::on_back_clicked()
 
 void OverviewBestellungen_Bestellung::on_orders_clicked()
 {
+
+    // prüfen, ob bereits ein Widget für die Bestellung existiert, wenn ja, löschen
+    if (m_liste) {
+        m_stack->removeWidget(m_liste);
+        delete m_liste;
+        m_liste = nullptr;
+    }
+
     m_liste = new overviewbestellungen_liste(m_customerId, m_stack);
     m_stack->addWidget(m_liste);
     m_stack->setCurrentIndex(6);
