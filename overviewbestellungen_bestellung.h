@@ -2,6 +2,7 @@
 #define OVERVIEWBESTELLUNGEN_BESTELLUNG_H
 
 #include "mainwindow.h"
+#include "overviewbestellungen_liste.h"
 #include <QWidget>
 
 
@@ -23,10 +24,14 @@ private slots:
     void on_back_clicked();
     void searchArtikel(const QString& searchText);
 
+    void on_orders_clicked();
+
 private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
-     QStackedWidget* m_stack;
+    QStackedWidget* m_stack;
+    overviewbestellungen_liste* m_liste;
+    
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H

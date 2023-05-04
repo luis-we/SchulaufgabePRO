@@ -1,48 +1,54 @@
 #ifndef KUNDE_H
 #define KUNDE_H
 
-#include <string>
+#include <QString>
+#include <QDate>
 
 class Kunde
 {
 public:
     Kunde();
-    Kunde(int id, int anrede, std::string name, std::string strasse,
-          int hausnr, int ort, int telefon, std::string geburtsdatum,
-          std::string email, std::string titel);
+    Kunde(int id, int anrede, QString name, QString vorname, QString strasse,
+          QString hausnr, int ort, QString telefon, QDate geburtsdatum,
+          QString email, QString titel);
 
     void setAnrede(int anrede);
-    void setName(std::string name);
-    void setStrasse(std::string strasse);
-    void setHausNr(int hausnr);
+    void setName(QString name);
+    void setVorname(QString vorname);
+    void setStrasse(QString strasse);
+    void setHausNr(QString hausnr);
     void setOrt(int ort);
-    void setTelefon(int telefon);
-    void setGeburtsdatum(std::string geburtsdatum);
-    void setEmail(std::string email);
-    void setTitel(std::string titel);
+    void setTelefon(QString telefon);
+    void setGeburtsdatum(QDate geburtsdatum);
+    void setEmail(QString email);
+    void setTitel(QString titel);
 
+    int getID();
     int getAnrede();
-    std::string getName();
-    std::string getStrasse();
-    int getHausNr();
+    QString getName();
+    QString getVorname();
+    QString getStrasse();
+    QString getHausNr();
     int getOrt();
-    int getTelefon();
-    std::string getGeburtsdatum();
-    std::string getEmail();
-    std::string getTitel();
+    QString getTelefon();
+    QDate getGeburtsdatum();
+    QString getEmail();
+    QString getTitel();
+
+    QString getDisplayText();
 
 private:
     int id;
     int anrede;
-    std::string name;
-    std::string vorname;
-    std::string strasse;
-    int hausnummer;
+    QString name;
+    QString vorname;
+    QString strasse;
+    QString hausnummer;
     int ort;
-    int telefon;
-    std::string geburtsdatum;
-    std::string email;
-    std::string titel;
+    QString telefon;
+    QDate geburtsdatum;
+    QString email;
+    QString titel;
 
 };
 

@@ -13,6 +13,12 @@ public:
         m_button = button;
     }
 
+    ~ListItem()
+    {
+        delete m_value;
+        delete m_button;
+    }
+
     T* GetValue()
     {
         return this->m_value;
