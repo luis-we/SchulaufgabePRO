@@ -21,6 +21,7 @@ public:
 
 private slots:
     void on_back_clicked();
+    void searchArtikel(const QString& searchText);
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
