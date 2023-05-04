@@ -28,6 +28,6 @@ overviewbestellungen_liste::~overviewbestellungen_liste()
 
 void overviewbestellungen_liste::on_back_clicked()
 {
-
     m_stack->setCurrentIndex(5);
+    m_stack->removeWidget(this);
 }
