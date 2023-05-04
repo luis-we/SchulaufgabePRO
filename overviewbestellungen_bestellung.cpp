@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <qlistwidget.h>
 #include <mainwindow.h>
+#include "qsqlerror.h"
+
 
 
 OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId, QStackedWidget* stack, QWidget *parent) :
@@ -29,7 +31,38 @@ OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
 
 void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 {
+    if (searchText.length() < 3) {
+        // Suche nicht starten, wenn weniger als 3 Buchstaben eingegeben wurden
+        return;
+    }
 
+    ui->artikelListe->clear();
+
+    // Suche nach Artikel mit dem eingegebenen Text im Namen
+    QSqlQuery queryArtikel;
+    queryArtikel.prepare("SELECT * FROM kunden WHERE Name LIKE :name");
+    queryArtikel.bindValue(":name", "%" + searchText + "%");
+
+    if (!queryArtikel.exec()) {
+        // Fehler beim Ausführen der Abfrage
+        qDebug() << "Fehler beim Suchen nach Kunden:";
+        qDebug() << queryArtikel.lastError().text();
+        return;
+    }
+
+    // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
+    while (queryArtikel.next()) {
+        QString customerName = queryArtikel.value("Name").toString();
+        QString customerAddress = queryArtikel.value("Straße").toString() + " " + queryArtikel.value("Hausnummer").toString();
+        QString customerCity = queryArtikel.value("ID_Ort").toString();
+        QString customerPhone = queryArtikel.value("Telefon").toString();
+        QString customerId = queryArtikel.value("ID_Kunde").toString();
+
+        QListWidgetItem *itemArtikel = new QListWidgetItem(ui->artikelListe);
+        itemArtikel->setText(customerName);
+        itemArtikel->setData(Qt::UserRole, customerId);
+        itemArtikel->setToolTip("Adresse: " + customerAddress + "\n" + "ID_Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);
+    }
 
 }
 

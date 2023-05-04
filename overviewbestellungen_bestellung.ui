@@ -39,7 +39,7 @@
     <string>Artikelsuche....</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="artikelListe">
+  <widget class="QListWidget" name="artikelListe">
    <property name="geometry">
     <rect>
      <x>120</x>
