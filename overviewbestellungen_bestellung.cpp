@@ -2,9 +2,7 @@
 #include "overviewbestellungen_bestellung.h"
 #include "ui_overviewbestellungen_bestellung.h"
 #include <QStackedWidget>
-#include <qlineedit.h>
 #include <QSqlQuery>
-#include "qsqlerror.h"
 #include <QMessageBox>
 #include <qlistwidget.h>
 #include <mainwindow.h>
@@ -21,8 +19,7 @@ OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId,
     // Den customerId im Label_ID anzeigen
     ui->ID_Label->setText(QString::number(customerId));
 
-
-
+    connect(ui->artikelSuche, &QLineEdit::textChanged, this, &OverviewBestellungen_Bestellung::searchArtikel);
 }
 
 OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
@@ -32,6 +29,7 @@ OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
 
 void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 {
+
 
 }
 
