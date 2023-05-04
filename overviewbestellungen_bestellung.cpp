@@ -27,3 +27,11 @@ void OverviewBestellungen_Bestellung::on_back_clicked()
     m_stack->setCurrentIndex(4);
 }
 
+
+void OverviewBestellungen_Bestellung::on_orders_clicked()
+{
+    m_liste = new overviewbestellungen_liste(m_customerId, m_stack);
+    m_stack->addWidget(m_liste);
+    m_stack->setCurrentIndex(6);
+}
+
