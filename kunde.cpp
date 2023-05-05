@@ -1,4 +1,5 @@
 #include "kunde.h"
+using namespace std;
 // Konstruktoren
 
 Kunde::Kunde()
@@ -6,9 +7,9 @@ Kunde::Kunde()
 
 }
 
-Kunde::Kunde(int id, int anrede, std::string name, std::string strasse,
-             int hausnr, int ort, int telefon, std::string geburtsdatum,
-             std::string email, std::string titel)
+Kunde::Kunde(int id, int anrede, string name, string strasse,
+             int hausnr, int ort, int telefon, string geburtsdatum,
+             string email, string titel)
 {
     this->id = id;
     setAnrede(anrede);
@@ -29,12 +30,12 @@ void Kunde::setAnrede(int anrede)
     this->anrede = anrede;
 }
 
-void Kunde::setName(std::string name)
+void Kunde::setName(string name)
 {
     this->name = name;
 }
 
-void Kunde::setStrasse(std::string strasse)
+void Kunde::setStrasse(string strasse)
 {
     this->strasse = strasse;
 }
@@ -54,17 +55,17 @@ void Kunde::setTelefon(int telefon)
     this->telefon = telefon;
 }
 
-void Kunde::setGeburtsdatum(std::string geburtsdatum)
+void Kunde::setGeburtsdatum(string geburtsdatum)
 {
     this->geburtsdatum = geburtsdatum;
 }
 
-void Kunde::setEmail(std::string email)
+void Kunde::setEmail(string email)
 {
     this->email = email;
 }
 
-void Kunde::setTitel(std::string titel)
+void Kunde::setTitel(string titel)
 {
     this->titel = titel;
 }
@@ -76,12 +77,12 @@ int Kunde::getAnrede()
     return this->anrede;
 }
 
-std::string Kunde::getName()
+string Kunde::getName()
 {
     return this->name;
 }
 
-std::string Kunde::getStrasse()
+string Kunde::getStrasse()
 {
     return this->strasse;
 }
@@ -101,20 +102,65 @@ int Kunde::getTelefon()
     return this->telefon;
 }
 
-std::string Kunde::getGeburtsdatum()
+string Kunde::getGeburtsdatum()
 {
-    return this->getGeburtsdatum();
+    return this->geburtsdatum;
 }
 
-std::string Kunde::getEmail()
+string Kunde::getEmail()
 {
     return this->email;
 }
 
-std::string Kunde::getTitel()
+string Kunde::getTitel()
 {
     return this->titel;
 }
+
+// sql functions
+void Kunde::updateKunde(int anrede, string name, string vorname, string strasse, int hausNr, int ort, int telefon, string geburtsdatum, string email, string titel)
+{
+    string sql("UPDATE kunden SET "
+               "Anrede = " + to_string(anrede) +
+               ", Name = " + name +
+               ", Vorname = " + vorname +
+               ", Straße = " + strasse +
+               ", Hausnummer = " + to_string(hausNr) +
+               ", ID_Ort = " + to_string(ort) +
+               ", Telefon = " + to_string(telefon) +
+               ", Geburtsdatum = " + geburtsdatum +
+               ", Email = " + email +
+               ", Titel = " + titel +
+               " WHERE ID_Kunde = " + to_string(this->id) + ";");
+}
+
+void Kunde::updateKunde()
+{
+    this->updateKunde(this->anrede, this->name, this->vorname, this->strasse, this->hausnummer, this->ort, this->telefon, this->geburtsdatum, this->email, this->titel);
+}
+
+void Kunde::saveKunde()
+{
+    string sql("INSERT INTO kunden "
+               "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon, "
+               "Geburtsdatum, Email, Titel) VALUES(" +
+               to_string(this->anrede) + "," +
+               this->name + "," +
+               this->vorname + "," +
+               this->strasse + "," +
+               to_string(this->hausnummer) + "," +
+               to_string(this->ort) + "," +
+               to_string(this->telefon) + "," +
+               this->geburtsdatum + "," +
+               this->email + "," +
+               this->titel + ");");
+}
+
+void Kunde::deleteKunde()
+{
+    string sql("DELETE FROM kunden WHERE ID_Kunde = " + to_string(this->id) + ";");
+}
+
 
 
 
