@@ -19,31 +19,9 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
 
     this->m_layout = new QVBoxLayout(this);
 
-    this->lieferanten = new vector<ListItem<QString>*>();
+    this->lieferanten = new vector<ListItem<lieferant>*>();
 
-    QSqlQuery query;
-    query.prepare("SELECT * FROM lieferanten"); //SQL Abfrage nach allen Lieferanten aus Tabelle
-
-    //Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
-    if (!query.exec()) {
-        qDebug() << "Fehler beim Suchen nach Lieferanten: " << query.lastError().text();
-        return;
-    }
-
-    while (query.next()) {
-        QPushButton* button = new QPushButton(this);
-
-        QString lieferantName = query.value("Name").toString();
-
-        ListItem<QString>* lieferant = new ListItem<QString>(&lieferantName, button);
-
-        connect(button, &QPushButton::clicked, [this, lieferant](){ this->on_list_item_clicked(lieferant); });
-
-        button->setText(lieferantName);
-
-        this->layout()->addWidget(button);
-        this->lieferanten->push_back(lieferant);
-    }
+   
 
 
     //Laden der Anreden
@@ -60,6 +38,8 @@ OverviewLieferanten::~OverviewLieferanten()
 {
     delete ui; //Löscht UI wenn Fenster geschlossen wird
 }
+
+
 
 //Anrede wird geladen und in DropDown Menü angezeigt
 void OverviewLieferanten::LadeAnreden()
@@ -86,43 +66,11 @@ void OverviewLieferanten::LadeAnreden()
     }
 }
 
-// Lade Lieferanten aus DB
-void OverviewLieferanten::LadeLieferanten()
-{
-    QSqlQuery query;
-
-    // SQL Abfragein Tab Lieferanten
-    query.prepare("SELECT * FROM lieferanten");
-
-    // Fehlerabfrage
-    if (!query.exec()) {
-        qDebug() << "Fehler bei der Suchen nach Lieferanren: " << query.lastError().text();
-        return;
-    }
-
-    // Query Auslesen und schreiben in Lieferanten
-    while (query.next()) {
-        //
-        lieferanten* lieferanten = new lieferant(
-            query.value("ID_Lieferant").toInt(),
-            query.value("Lieferantenname").toString(),
-            query.value("Anrede_Ansprechpartner").toInt(),
-            query.value("Ansprechpartner").toString(),
-            query.value("Telefon").toString(),
-            query.value("Straße").toString(),
-            query.value("Hausnummer").toString(),
-            query.value("ID_Ort").toInt(),
-        );
-
-        // Hinzufügen des Lieferanten in Tabelle
-        ErstelleLieferant(lieferant);
-    }
-}
-
 
 
 //Leeren des Forms
-void OverviewLieferanten::LeereForm() {
+void OverviewLieferanten::LeereForm()
+{
     ui->textBrowser_anrede->setCurrentIndex(-1);
     ui->textBrowser_lieferantenansprechpartner->clear();
     ui->textBrowser_lieferantenhsnr->clear();
@@ -159,32 +107,53 @@ void OverviewLieferanten::LadeOrte()
     }
 }
 
+void OverviewLieferanten::LadeLieferanten()
+{
+    //Leer?
+}
+
+void OverviewLieferanten::LadeLieferanten(lieferant* delivery)
+{
+    //Setzen aller Parameter vom Kunden in die Formular Felder
+    ui->textBrowser_lieferantenid->setText(QString::number(delivery->getID()));
+    ui->textBrowser_lieferantenname->setText(delivery->getName());
+    ui->textBrowser_lieferantenansprechpartner->setText(delivery->getAnsprechpartner());
+    ui->textBrowser_lieferantenstrasse->setText(delivery->getStrasse());
+    ui->textBrowser_lieferantenhsnr->setText(delivery->getHausNr());
+    ui->textBrowser_lieferantentelefon->setText(delivery->getTelefon());
+    
+
+    //Setzen der Drop-Down-Felder anhand der im Kunden gespeicherten ID's
+    ui->textBrowser_anrede->setCurrentIndex(ui->textBrowser_anrede->findData(delivery->getAnrede()));
+    ui->textBrowser_ort->setCurrentIndex(ui->textBrowser_ort->findData(delivery->getOrt()));
+}
+
 //Erstellen eines Listeneintrags vom Typ Kunde
-ListItem<lieferant>* OverviewLieferanten::ErstelleLieferant(lieferant* lieferant)
+ListItem<lieferant>* OverviewLieferanten::ErstelleLieferant(lieferant* delivery)
 {
     //Erstellung des Buttons für den Kunden
     QPushButton* button = new QPushButton(this);
 
     //Erstellung des Listeneintrages (Verknüpfung von Button und Kunde)
-    ListItem<lieferant>* lieferatenTeil = new ListItem<lieferant>(lieferant, button);
+    ListItem<lieferant>* lieferatenTeil = new ListItem<lieferant>(delivery, button);
 
     //Verbindung des On-Click Events des Buttons mit der Funktion zur übermittlung des Ausgewählten Kunden
     connect(button, &QPushButton::clicked, [this, lieferatenTeil](){ this->on_list_item_clicked(lieferatenTeil); });
 
     //Setzen des Button Textes auf den Vollständigen Namen des Kunden
-    button->setText(lieferant->getDisplayText());
+    button->setText(delivery->getAnsprechpartner());
 
     //Hinzugügen des Buttons in das Layout der Kundenliste
     this->m_layout->addWidget(button); //?????????????
 
     //Hinzufügen des Listeneintrags in den Vector der Kundenliste
-    this->m_customers->push_back(lieferatenTeil);//?????????????
+    this->m_lieferanten->push_back(lieferatenTeil);//?????????????
 
     //Rückgabe des Listeneintrages
     return lieferatenTeil;
 }
 
-void OverviewLieferanten::on_list_item_clicked(ListItem<QString>* item)
+void OverviewLieferanten::on_list_item_clicked(ListItem<lieferant>* item)
 {
     qDebug() << "Clicked: " << item->GetButton()->text();
 }
@@ -245,19 +214,21 @@ void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
 
 void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
 {
-    //Button zum Löschen eines Lieferanten
-    QSqlQuery query_delete;
-    query_delete.prepare("DELETE FROM lieferanten WHERE ID_Lieferant = :ID_Lieferant");
+    //Zurücksetzen der Formularfelder auf ihre Initialwerte
+    LeereForm();
 
-    query_delete.bindValue(":ID_Lieferant", ui->textBrowser_lieferantenid->toPlainText());
-
-    query_delete.exec(); //Führt Query aus
-    //Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
-    if (!query_delete.exec()) {
-        qDebug() << "Fehler beim LÖSCHEN eines Lieferanten: " << query_delete.lastError().text();
+    //Abbruch der Funktion wenn kein Kunde ausgewählt ist
+    if(this->m_ausgewaelterLieferant == nullptr)
         return;
-    }
+
+    //Löschen des Kunden aus der Kundenliste und der Datenbank
+    LoescheLieferant();
+
+    //Deaktivieren der neu und löschen Buttons
+    ui->pushButton_anlegen->setDisabled(true);
+    ui->pushButton_3_loeschen->setDisabled(true);
 }
+
 
 void OverviewLieferanten::on_pushButton_leeren_clicked()
 {
@@ -266,10 +237,35 @@ void OverviewLieferanten::on_pushButton_leeren_clicked()
 
 void OverviewLieferanten::SpeichereLieferant(bool created)
 {
+    //Auslesen des aktuell ausgewählten Kunden
+    lieferant* delivery = m_ausgewaelterLieferant->GetValue();
+
+    delivery->setAnrede(ui->textBrowser_anrede->currentData().value<int>());
+    delivery->setName(ui->textBrowser_lieferantenname->toPlainText());
+    delivery->setStrasse(ui->textBrowser_lieferantenstrasse->toPlainText());
+    delivery->setHausNr(ui->textBrowser_lieferantenhsnr->toPlainText());
+    delivery->setOrt(ui->textBrowser_ort->currentData().value<int>());
+    delivery->setTelefon(ui->textBrowser_lieferantentelefon->toPlainText());
+    delivery->setAnsprechpartner(ui->textBrowser_lieferantenansprechpartner->toPlainText());
+
+    if(created) {
+        //Erstellen eines neuen Kundeneintrags in der Datenbank
+        //customer->create();
+        //Laden der Kundendetails in das Formular
+        LadeLieferanten(delivery);
+    }
+    else {
+        //Speichern der veränderten Kundendaten
+        //customer->save();
+    }
 }
 
 void OverviewLieferanten::LoescheLieferant()
 {
+    //Löscht den Kunden aus der Kundenliste
+    delete m_ausgewaelterLieferant;
+    //Setzt den ausgewählten Kunden auf einen null pointer
+    m_ausgewaelterLieferant = nullptr;
 }
 
 bool OverviewLieferanten::UeberpruefeEingabe()
@@ -282,6 +278,18 @@ QString OverviewLieferanten::HolePLZVonOrt(int ort)
     return QString();
 }
 
-void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *lieferant)
+void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
 {
+    //Abbruch bei wiederholten auswählen eines Kunden
+    if(this->m_ausgewaelterLieferant == delivery) return;
+
+    //Aktivieren der Erstellen und Löschen Buttons
+    ui->pushButton_anlegen->setDisabled(false);
+    ui->pushButton_3_loeschen->setDisabled(false);
+
+    //Ausgewählten Kunden setzen
+    this->m_ausgewaelterLieferant = delivery;
+
+    //Kundendetails in das Formular Laden
+    LadeLieferanten(delivery->GetValue());
 }

@@ -3,6 +3,7 @@
 
 #include "listitem.h"
 #include "mainwindow.h"
+#include "lieferant.h"
 
 #include <QWidget>
 #include <QVBoxLayout>
@@ -31,7 +32,7 @@ public slots:
 
 // Private Attribute    
 private slots:
-    void on_list_item_clicked(ListItem<QString>* item);
+    void on_list_item_clicked(ListItem<lieferant>* item);
     void on_back_to_main_clicked();
     void on_pushButton_anlegen_clicked();
     void on_pushButton_2_bearbeiten_clicked();
@@ -41,7 +42,7 @@ private slots:
 
 private:
     Ui::OverviewLieferanten* ui;
-    vector<ListItem<QString>*>* lieferanten;
+    vector<ListItem<lieferant>*>* lieferanten;
     MainWindow* parent;
     QVBoxLayout* m_layout;
 
@@ -49,15 +50,15 @@ private:
     void LadeAnreden();
     void LadeOrte();
     void LadeLieferanten();
-    void LadeLieferanten(lieferant* lieferant);
+    void LadeLieferanten(lieferant* delivery);
     void SpeichereLieferant(bool created);
     void LoescheLieferant();
     bool UeberpruefeEingabe();
     QString HolePLZVonOrt(int ort);
-    ListItem<QString>* ErstelleLieferantItem(lieferant* lieferant);
-    void WaehleLieferant(ListItem<lieferanten>* lieferant);
+    ListItem<QString>* ErstelleLieferantItem(lieferant* delivery);
+    void WaehleLieferant(ListItem<lieferant>* delivery);
 
-    ListItem<lieferant>* ErstelleLieferant(lieferant* lieferant);
+    ListItem<lieferant>* ErstelleLieferant(lieferant* delivery);
     ListItem<lieferant>* m_ausgewaelterLieferant;
     vector<ListItem<lieferant>*>* m_lieferanten;
 
