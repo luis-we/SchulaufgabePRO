@@ -106,7 +106,7 @@
    <property name="geometry">
     <rect>
      <x>430</x>
-     <y>660</y>
+     <y>680</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -119,7 +119,7 @@
    <property name="geometry">
     <rect>
      <x>570</x>
-     <y>660</y>
+     <y>680</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -132,7 +132,7 @@
    <property name="geometry">
     <rect>
      <x>700</x>
-     <y>660</y>
+     <y>680</y>
      <width>93</width>
      <height>29</height>
     </rect>
@@ -165,19 +165,6 @@
    </property>
    <property name="text">
     <string>Name</string>
-   </property>
-  </widget>
-  <widget class="QTextBrowser" name="textBrowser_lieferantenandrede">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>220</y>
-     <width>341</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>false</bool>
    </property>
   </widget>
   <widget class="QLabel" name="label_4">
@@ -297,19 +284,6 @@
     <string>HsNr</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="textBrowser_lieferantenort">
-   <property name="geometry">
-    <rect>
-     <x>440</x>
-     <y>520</y>
-     <width>341</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>false</bool>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_9">
    <property name="geometry">
     <rect>
@@ -324,10 +298,13 @@
    </property>
   </widget>
   <widget class="QTextBrowser" name="textBrowser_lieferantenid">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>580</y>
+     <y>640</y>
      <width>341</width>
      <height>31</height>
     </rect>
@@ -340,13 +317,75 @@
    <property name="geometry">
     <rect>
      <x>440</x>
-     <y>560</y>
+     <y>620</y>
      <width>221</width>
      <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>ID</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="textBrowser_ort">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>520</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="textBrowser_anrede">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>220</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_11">
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>560</y>
+     <width>221</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PLZ</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser_plz">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>440</x>
+     <y>580</y>
+     <width>341</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>false</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_leeren">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>680</y>
+     <width>93</width>
+     <height>29</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Leeren</string>
    </property>
   </widget>
  </widget>
