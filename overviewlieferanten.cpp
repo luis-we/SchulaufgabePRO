@@ -19,9 +19,14 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
 
     this->m_layout = new QVBoxLayout(this);
 
-    this->lieferanten = new vector<ListItem<lieferant>*>();
+    this->m_lieferanten = new vector<ListItem<lieferant>*>();
 
-   
+    this->m_ausgewaelterLieferant = nullptr;
+
+
+   //Deaktivieren der Erstellen und Löschen Buttons
+    ui->pushButton_anlegen->setDisabled(true);
+    ui->pushButton_3_loeschen->setDisabled(true);
 
 
     //Laden der Anreden
@@ -32,6 +37,8 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
 
     //Laden der Lieferanten
     LadeLieferanten();
+
+    LeereForm();
 }
 
 OverviewLieferanten::~OverviewLieferanten()
@@ -107,12 +114,40 @@ void OverviewLieferanten::LadeOrte()
     }
 }
 
+//ZUm füllen der Liste
 void OverviewLieferanten::LadeLieferanten()
 {
-    //Leer?
+    QSqlQuery query;
+
+    //Select Statement zum Lade der Kunden
+    query.prepare("SELECT * FROM lieferant");
+
+    //Überprüfung der Datenbank Abfrage
+    if (!query.exec()) {
+        qDebug() << "Fehler bei der Suchen nach Lieferant: " << query.lastError().text();
+        return;
+    }
+
+    //Schleifendurchlauf zum Auslesen aller Kunden
+    while (query.next()) {
+        //Erstellung eines neuen Kunden-Objektes mit den Werten aus der Datenbank
+        lieferant* delivery = new lieferant(
+            query.value("ID_Lieferant").toInt(),
+            query.value("Anrede_Ansprechpartner").toInt(),
+            query.value("Lieferantenname").toString(),
+            query.value("Straße").toString(),
+            query.value("Hausnummer").toString(),
+            query.value("ID_Ort").toInt(),
+            query.value("Telefon").toString(),
+            query.value("Ansprechpartner").toString()
+        );
+
+        //Erstellen eines Listeneintrags des Kundens für die Kundenliste
+        ErstelleLieferant(delivery);
+    }
 }
 
-void OverviewLieferanten::LadeLieferanten(lieferant* delivery)
+void OverviewLieferanten::LadeLieferant(lieferant* delivery)
 {
     //Setzen aller Parameter vom Kunden in die Formular Felder
     ui->textBrowser_lieferantenid->setText(QString::number(delivery->getID()));
@@ -155,7 +190,8 @@ ListItem<lieferant>* OverviewLieferanten::ErstelleLieferant(lieferant* delivery)
 
 void OverviewLieferanten::on_list_item_clicked(ListItem<lieferant>* item)
 {
-    qDebug() << "Clicked: " << item->GetButton()->text();
+    //Auswählen des geklickten Kunden
+    WaehleLieferant(item);
 }
 
 void OverviewLieferanten::on_back_to_main_clicked()
@@ -192,7 +228,7 @@ void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
 {
     //Funktion um einen gesuchten Lieferanten zu bearbeiten und wieder in die SQL Tabelle zurückschreiben
     QSqlQuery query_update; //SQL Query zum Updaten eines Lieferanten
-    query_update.prepare("UPDATE lieferanten SET Lieferantenname = :Lieferantenname, Anrede_Ansprechpartner = :Anrede_Ansprechpartner, Ansprechpartner = :Ansprechpartner, Telefon = :Telefon, Straße = :Straße, Hausnummer = :Hausnummer, ID_Ort = :ID_Ort WHERE ID_Lieferant = :ID_Lieferant");
+    query_update.prepare("UPDATE lieferant SET Lieferantenname = :Lieferantenname, Anrede_Ansprechpartner = :Anrede_Ansprechpartner, Ansprechpartner = :Ansprechpartner, Telefon = :Telefon, Straße = :Straße, Hausnummer = :Hausnummer, ID_Ort = :ID_Ort WHERE ID_Lieferant = :ID_Lieferant");
     
     //Binden der Werte aus den Textfeldern an die SQL Abfrage
     query_update.bindValue(":Lieferantenname", ui->textBrowser_lieferantenname->toPlainText());
@@ -252,7 +288,7 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
         //Erstellen eines neuen Kundeneintrags in der Datenbank
         //customer->create();
         //Laden der Kundendetails in das Formular
-        LadeLieferanten(delivery);
+        LadeLieferant(delivery);
     }
     else {
         //Speichern der veränderten Kundendaten
@@ -273,10 +309,6 @@ bool OverviewLieferanten::UeberpruefeEingabe()
     return false;
 }
 
-QString OverviewLieferanten::HolePLZVonOrt(int ort)
-{
-    return QString();
-}
 
 void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
 {
@@ -291,5 +323,30 @@ void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
     this->m_ausgewaelterLieferant = delivery;
 
     //Kundendetails in das Formular Laden
-    LadeLieferanten(delivery->GetValue());
+    LadeLieferant(delivery->GetValue());
+}
+
+
+QString OverviewLieferanten::HolePLZVonOrt(int loc)
+    //Initialisieren der Postleitzahl
+    QString plz = "";
+
+    QSqlQuery query;
+
+    //Select Statement zum auslesen der Postleitzahl des dazugehörigen Ortes
+    query.prepare("SELECT PLZ FROM ort WHERE ID_Ort = " + QString::number(loc));
+
+    //Überprüfung der Datenbank Abfrage
+    if (!query.exec()) {
+        qDebug() << "Fehler bei der Suchen nach PLZ: " << query.lastError().text();
+        return plz;
+    }
+
+    //Schleifendurchlauf zum Auslesen und Speichern der Postleitzahl
+    while (query.next()) {
+        plz = query.value("PLZ").toString();
+    }
+
+    //Rückgabe der Postleitzahl
+    return plz;
 }

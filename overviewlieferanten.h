@@ -50,12 +50,11 @@ private:
     void LadeAnreden();
     void LadeOrte();
     void LadeLieferanten();
-    void LadeLieferanten(lieferant* delivery);
+    void LadeLieferant(lieferant* delivery);
     void SpeichereLieferant(bool created);
     void LoescheLieferant();
     bool UeberpruefeEingabe();
-    QString HolePLZVonOrt(int ort);
-    ListItem<QString>* ErstelleLieferantItem(lieferant* delivery);
+    QString HolePLZVonOrt(int loc);
     void WaehleLieferant(ListItem<lieferant>* delivery);
 
     ListItem<lieferant>* ErstelleLieferant(lieferant* delivery);
