@@ -56,6 +56,7 @@ private:
     bool UeberpruefeEingabe();
     QString HolePLZVonOrt(int loc);
     void WaehleLieferant(ListItem<lieferant>* delivery);
+    void Ortswechsel(int index);
 
     ListItem<lieferant>* ErstelleLieferant(lieferant* delivery);
     ListItem<lieferant>* m_ausgewaelterLieferant;
