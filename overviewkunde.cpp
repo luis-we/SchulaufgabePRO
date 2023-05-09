@@ -162,7 +162,7 @@ void OverviewKunde::SelectCustomer(ListItem<Kunde>* customer)
 //Kundendetails in das Formular laden
 void OverviewKunde::LoadCustomer(Kunde* customer) {
     //Setzen aller Parameter vom Kunden in die Formular Felder
-    ui->id->setText(QString::number(customer->getID()));
+    ui->id->setText(QString::number(customer->getId()));
     ui->titel->setText(customer->getTitel());
     ui->name->setText(customer->getName());
     ui->firstname->setText(customer->getVorname());
