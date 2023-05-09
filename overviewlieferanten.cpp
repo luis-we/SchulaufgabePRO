@@ -135,14 +135,14 @@ void OverviewLieferanten::LadeLieferanten()
     while (query.next()) {
         // Erstellung Lieferant Objekt mit Daten aus DB
         lieferant* delivery = new lieferant(
-            query.value("ID_Lieferant").toInt(),
-            query.value("Anrede_Ansprechpartner").toInt(),
-            query.value("Lieferantenname").toString(),
-            query.value("Straße").toString(),
-            query.value("Hausnummer").toString(),
-            query.value("ID_Ort").toInt(),
-            query.value("Telefon").toString(),
-            query.value("Ansprechpartner").toString()
+                query.value("ID_Lieferant").toInt(),
+                query.value("Anrede_Ansprechpartner").toInt(),
+                query.value("Lieferantenname").toString(),
+                query.value("Ansprechpartner").toString(),
+                query.value("Straße").toString(),
+                query.value("Hausnummer").toString(),
+                query.value("ID_Ort").toInt(),
+                query.value("Telefon").toString()
         );
 
         // Erstelle Lieferant Objekt für Liste
@@ -204,51 +204,40 @@ void OverviewLieferanten::on_back_to_main_clicked()
 
 void OverviewLieferanten::on_pushButton_anlegen_clicked()
 {
-    // Button zum Anlegen eines neuen Lieferanten in der SQL Tabelle Lieferanten
-    QSqlQuery query_insert; //SQL Query zum Einfügen eines neuen Lieferanten
-    // Zusammenbauen der SQL Abfrage mit den Werten aus den Textfeldern
-    query_insert.prepare("INSERT INTO lieferant (Lieferantenname, Anrede_Ansprechpartner, Ansprechpartner, Telefon, Straße, Hausnummer, ID_Ort) VALUES (:Lieferantenname, :Anrede_Ansprechpartner, :Ansprechpartner, :Telefon, :Straße, :Hausnummer, :ID_Ort)");
+     //Zurücksetzen des ausgewählten Kunden
+    m_ausgewaelterLieferant = nullptr;
 
-    // Binden der Werte aus den Textfeldern an die SQL Abfrage
-    query_insert.bindValue(":Lieferantenname", ui->textBrowser_lieferantenname->toPlainText());
-    query_insert.bindValue(":Anrede_Ansprechpartner", ui->textBrowser_anrede->currentText());
-    query_insert.bindValue(":Ansprechpartner", ui->textBrowser_lieferantenansprechpartner->toPlainText());
-    query_insert.bindValue(":Telefon", ui->textBrowser_lieferantentelefon->toPlainText());
-    query_insert.bindValue(":Straße", ui->textBrowser_lieferantenstrasse->toPlainText());
-    query_insert.bindValue(":Hausnummer", ui->textBrowser_lieferantenhsnr->toPlainText());
-    query_insert.bindValue(":ID_Ort", ui->textBrowser_ort->currentText());
-    // query_insert.bindValue(":ID_Lieferant", ui->textBrowser_lieferantenid->toPlainText());
+    //Zurücksetzen der Formularfelder auf ihre Initialwerte
+    LeereForm();
 
-    query_insert.exec(); //Führt Query aus
-    // Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
-    if (!query_insert.exec()) {
-        qDebug() << "Fehler beim Anlegen eines Lieferanten: " << query_insert.lastError().text();
-        return;
-    }
+    //Deaktivieren der neu und löschen Buttons
+    ui->pushButton_anlegen->setDisabled(true);
+    ui->pushButton_anlegen->setDisabled(true);
 }
 
 void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
 {
-    // Funktion um einen gesuchten Lieferanten zu bearbeiten und wieder in die SQL Tabelle zurückschreiben
-    QSqlQuery query_update; //SQL Query zum Updaten eines Lieferanten
-    query_update.prepare("UPDATE lieferant SET Lieferantenname = :Lieferantenname, Anrede_Ansprechpartner = :Anrede_Ansprechpartner, Ansprechpartner = :Ansprechpartner, Telefon = :Telefon, Straße = :Straße, Hausnummer = :Hausnummer, ID_Ort = :ID_Ort WHERE ID_Lieferant = :ID_Lieferant");
-    
-    // Binden der Werte aus den Textfeldern an die SQL Abfrage
-    query_update.bindValue(":fname", ui->textBrowser_lieferantenname->toPlainText());
-    query_update.bindValue(":Anrede_Ansprechpartner", ui->textBrowser_anrede->currentText());
-    query_update.bindValue(":Ansprechpartner", ui->textBrowser_lieferantenansprechpartner->toPlainText());
-    query_update.bindValue(":Telefon", ui->textBrowser_lieferantentelefon->toPlainText());
-    query_update.bindValue(":Straße", ui->textBrowser_lieferantenstrasse->toPlainText());
-    query_update.bindValue(":Hausnummer", ui->textBrowser_lieferantenhsnr->toPlainText());
-    query_update.bindValue(":ID_Ort", ui->textBrowser_ort->currentText());
-    // query_update.bindValue(":ID_Lieferant", ui->textBrowser_lieferantenid->toPlainText());
-
-    query_update.exec(); //Führt Query aus
-    // Prüft ob Fehler beim SQL Querry auftreten und gibt Fehler aus
-    if (!query_update.exec()) {
-        qDebug() << "Fehler beim Bearbeiten eines Lieferanten: " << query_update.lastError().text();
+    //Abbruch der Funktion wenn die Eingabeüberprüfung fehlschlägt
+    if(!UeberpruefeEingabe()) {
         return;
-    }  
+    }
+
+    bool created = false;
+
+    //Überprüfung ob kein Kunde ausgewählt ist
+    if(this->m_ausgewaelterLieferant == nullptr) {
+        //Erstellung eines neuen Kunden-Ojektes
+        lieferant* delivery = new lieferant();
+
+        //Erstelllung eines neuen Listeneintrags für den Kunden
+        this->m_ausgewaelterLieferant = ErstelleLieferant(delivery);
+
+        //Zwischenspeichern das ein neuer Kunde erstellt wurde
+        created = true;
+    }
+
+    //Speichern des ausgewählten oder neu erstellten Kunden
+    SpeichereLieferant(created);
 }
 
 void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
