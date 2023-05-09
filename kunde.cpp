@@ -1,20 +1,23 @@
 #include "kunde.h"
 #include "qsqlquery.h"
-using namespace std;
-// Konstruktoren
+#include <QString>
 
+using namespace std;
+
+// Konstruktoren
 Kunde::Kunde()
 {
-
+    this->id = 0;
 }
 
-Kunde::Kunde(int id, int anrede, string name, string strasse,
-             int hausnr, int ort, int telefon, string geburtsdatum,
-             string email, string titel)
+Kunde::Kunde(int id, int anrede, QString name, QString vorname, QString strasse,
+             QString hausnr, int ort, QString telefon, QDate geburtsdatum,
+             QString email, QString titel)
 {
     this->id = id;
     setAnrede(anrede);
     setName(name);
+    setVorname(vorname);
     setStrasse(strasse);
     setHausNr(hausnr);
     setOrt(ort);
@@ -25,23 +28,27 @@ Kunde::Kunde(int id, int anrede, string name, string strasse,
 }
 
 // setter
-
 void Kunde::setAnrede(int anrede)
 {
     this->anrede = anrede;
 }
 
-void Kunde::setName(string name)
+void Kunde::setName(QString name)
 {
     this->name = name;
 }
 
-void Kunde::setStrasse(string strasse)
+void Kunde::setVorname(QString vorname)
+{
+    this->vorname = vorname;
+}
+
+void Kunde::setStrasse(QString strasse)
 {
     this->strasse = strasse;
 }
 
-void Kunde::setHausNr(int hausnr)
+void Kunde::setHausNr(QString hausnr)
 {
     this->hausnummer = hausnr;
 }
@@ -51,44 +58,54 @@ void Kunde::setOrt(int ort)
     this->ort = ort;
 }
 
-void Kunde::setTelefon(int telefon)
+void Kunde::setTelefon(QString telefon)
 {
     this->telefon = telefon;
 }
 
-void Kunde::setGeburtsdatum(string geburtsdatum)
+void Kunde::setGeburtsdatum(QDate geburtsdatum)
 {
     this->geburtsdatum = geburtsdatum;
 }
 
-void Kunde::setEmail(string email)
+void Kunde::setEmail(QString email)
 {
     this->email = email;
 }
 
-void Kunde::setTitel(string titel)
+void Kunde::setTitel(QString titel)
 {
     this->titel = titel;
 }
 
 
 // getter
+int Kunde::getId()
+{
+    return this->id;
+}
+
 int Kunde::getAnrede()
 {
     return this->anrede;
 }
 
-string Kunde::getName()
+QString Kunde::getName()
 {
     return this->name;
 }
 
-string Kunde::getStrasse()
+QString Kunde::getVorname()
+{
+    return this->vorname;
+}
+
+QString Kunde::getStrasse()
 {
     return this->strasse;
 }
 
-int Kunde::getHausNr()
+QString Kunde::getHausNr()
 {
     return this->hausnummer;
 }
@@ -98,28 +115,28 @@ int Kunde::getOrt()
     return this->ort;
 }
 
-int Kunde::getTelefon()
+QString Kunde::getTelefon()
 {
     return this->telefon;
 }
 
-string Kunde::getGeburtsdatum()
+QDate Kunde::getGeburtsdatum()
 {
     return this->geburtsdatum;
 }
 
-string Kunde::getEmail()
+QString Kunde::getEmail()
 {
     return this->email;
 }
 
-string Kunde::getTitel()
+QString Kunde::getTitel()
 {
     return this->titel;
 }
 
 // sql functions
-void Kunde::updateKunde(int anrede, string name, string vorname, string strasse, int hausNr, int ort, int telefon, string geburtsdatum, string email, string titel)
+void Kunde::updateKunde(int anrede, QString name, QString vorname, QString strasse, int hausNr, int ort, int telefon, QString geburtsdatum, QString email, QString titel)
 {
     QSqlQuery query;
 
@@ -152,7 +169,7 @@ void Kunde::updateKunde(int anrede, string name, string vorname, string strasse,
 
 void Kunde::updateKunde()
 {
-    this->updateKunde(this->anrede, this->name, this->vorname, this->strasse, this->hausnummer, this->ort, this->telefon, this->geburtsdatum, this->email, this->titel);
+    //this->updateKunde(this->anrede, this->name, this->vorname, this->strasse, this->hausnummer, this->ort, this->telefon, this->geburtsdatum, this->email, this->titel);
 }
 
 void Kunde::saveKunde()
@@ -177,6 +194,34 @@ void Kunde::saveKunde()
     query.bindValue(":titel", this->titel);
 
     query.exec();
+
+    QSqlQuery query2;
+    query2.prepare("SELECT ID_Kunde FROM kunden WHERE"
+                  "Anrede = :anrede,"
+                  "Name = :name,"
+                  "Vorname = :vorname,"
+                  "Straße = :strasse,"
+                  "Hausnummer = :hausnr,"
+                  "ID_Ort = :ort,"
+                  "Telefon = :telefon,"
+                  "Geburtsdatum = :geb,"
+                  "Email = :email,"
+                  "Titel = :titel");
+
+    query2.bindValue(":anrede", this->anrede);
+    query2.bindValue(":name", this->name);
+    query2.bindValue(":vorname", this->vorname);
+    query2.bindValue(":strasse", this->strasse);
+    query2.bindValue(":hausnr", this->hausnummer);
+    query2.bindValue(":ort", this->ort);
+    query2.bindValue(":telefon", this->telefon);
+    query2.bindValue(":geb", this->geburtsdatum);
+    query2.bindValue(":email", this->email);
+    query2.bindValue(":titel", this->titel);
+
+    query2.exec();
+
+
 }
 
 void Kunde::deleteKunde()
@@ -187,6 +232,11 @@ void Kunde::deleteKunde()
     query.exec();
 }
 
+
+QString Kunde::getDisplayText()
+{
+    return this->name + " " + this->vorname;
+}
 
 
 
