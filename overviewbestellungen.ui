@@ -41,7 +41,7 @@
     </font>
    </property>
    <property name="placeholderText">
-    <string>Kundensuche ...</string>
+    <string>Nachname ...</string>
    </property>
   </widget>
   <widget class="QListWidget" name="customer_list">
@@ -72,7 +72,7 @@
     <string>Weiter</string>
    </property>
   </widget>
-  <widget class="QLabel" name="LabelArtikel">
+  <widget class="QLabel" name="Label_Kundenauswahl">
    <property name="geometry">
     <rect>
      <x>280</x>
@@ -89,6 +89,25 @@
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:20pt;&quot;&gt;Kunde auswählen&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Label_Info">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>120</y>
+     <width>391</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>16</pointsize>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="text">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:400;&quot;&gt;🛈 für mehr Informationen mit Maus über Kunde hovern 🛈&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
  </widget>
