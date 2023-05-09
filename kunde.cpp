@@ -1,4 +1,5 @@
 #include "kunde.h"
+#include "qsqlquery.h"
 using namespace std;
 // Konstruktoren
 
@@ -120,18 +121,33 @@ string Kunde::getTitel()
 // sql functions
 void Kunde::updateKunde(int anrede, string name, string vorname, string strasse, int hausNr, int ort, int telefon, string geburtsdatum, string email, string titel)
 {
-    string sql("UPDATE kunden SET "
-               "Anrede = " + to_string(anrede) +
-               ", Name = " + name +
-               ", Vorname = " + vorname +
-               ", Straße = " + strasse +
-               ", Hausnummer = " + to_string(hausNr) +
-               ", ID_Ort = " + to_string(ort) +
-               ", Telefon = " + to_string(telefon) +
-               ", Geburtsdatum = " + geburtsdatum +
-               ", Email = " + email +
-               ", Titel = " + titel +
-               " WHERE ID_Kunde = " + to_string(this->id) + ";");
+    QSqlQuery query;
+
+    query.prepare("UPDATE kunden SET"
+                  "Anrede = :anrede,"
+                  "Name = :name,"
+                  "Vorname = :vorname,"
+                  "Straße = :strasse,"
+                  "Hausnummer = :hausnr,"
+                  "ID_Ort = :ort,"
+                  "Telefon = :telefon,"
+                  "Geburtsdatum = :geb,"
+                  "Email = :email,"
+                  "Titel = :titel"
+                  "WHERE ID_Kunde = :kunde");
+    query.bindValue(":anrede", anrede);
+    query.bindValue(":name", name);
+    query.bindValue(":vorname", vorname);
+    query.bindValue(":strasse", strasse);
+    query.bindValue(":hausnr", hausNr);
+    query.bindValue(":ort", ort);
+    query.bindValue(":telefon", telefon);
+    query.bindValue(":geb", geburtsdatum);
+    query.bindValue(":email", email);
+    query.bindValue(":titel", titel);
+    query.bindValue(":kunde", this->id);
+
+    query.exec();
 }
 
 void Kunde::updateKunde()
@@ -141,24 +157,34 @@ void Kunde::updateKunde()
 
 void Kunde::saveKunde()
 {
-    string sql("INSERT INTO kunden "
-               "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon, "
-               "Geburtsdatum, Email, Titel) VALUES(" +
-               to_string(this->anrede) + "," +
-               this->name + "," +
-               this->vorname + "," +
-               this->strasse + "," +
-               to_string(this->hausnummer) + "," +
-               to_string(this->ort) + "," +
-               to_string(this->telefon) + "," +
-               this->geburtsdatum + "," +
-               this->email + "," +
-               this->titel + ");");
+    QSqlQuery query;
+    query.prepare("INSERT INTO kunden"
+                  "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon, "
+                  "Geburtsdatum, Email, Titel) VALUES("
+                  ":anrede, :name, :vorname, :strasse,"
+                  ":hausnr, :ort, :telefon, :geb, "
+                  ":email, :titel)");
+
+    query.bindValue(":anrede", this->anrede);
+    query.bindValue(":name", this->name);
+    query.bindValue(":vorname", this->vorname);
+    query.bindValue(":strasse", this->strasse);
+    query.bindValue(":hausnr", this->hausnummer);
+    query.bindValue(":ort", this->ort);
+    query.bindValue(":telefon", this->telefon);
+    query.bindValue(":geb", this->geburtsdatum);
+    query.bindValue(":email", this->email);
+    query.bindValue(":titel", this->titel);
+
+    query.exec();
 }
 
 void Kunde::deleteKunde()
 {
-    string sql("DELETE FROM kunden WHERE ID_Kunde = " + to_string(this->id) + ";");
+    QSqlQuery query;
+    query.prepare("DELETE FROM kunden WHERE ID_Kunde = :id");
+    query.bindValue(":id", this->id);
+    query.exec();
 }
 
 
