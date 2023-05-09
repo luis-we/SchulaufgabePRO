@@ -21,6 +21,7 @@ SOURCES += \
     overviewlieferanten.cpp
 
 HEADERS += \
+    artikel.h \
     listitem.h \
     kunde.h \
     mainwindow.h \
