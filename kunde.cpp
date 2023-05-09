@@ -197,9 +197,7 @@ void Kunde::saveKunde()
 
     query.exec();
 
-    QMessageBox msgBox;
-    msgBox.setText(query.lastInsertId().toString());
-    msgBox.exec();
+    this->id = query.lastInsertId().toInt();
 
 }
 
