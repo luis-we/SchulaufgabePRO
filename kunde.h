@@ -39,7 +39,7 @@ public:
 
     QString getDisplayText();
 
-    void updateKunde(int anrede, QString name, QString vorname, QString strasse, int hausNr, int ort, int telefon, QString geburtsdatum, QString email, QString titel);
+    void updateKunde(int anrede, QString name, QString vorname, QString strasse, QString hausNr, int ort, QString telefon, QDate geburtsdatum, QString email, QString titel);
     void updateKunde();
     void saveKunde();
     void deleteKunde();

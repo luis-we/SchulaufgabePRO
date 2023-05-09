@@ -1,6 +1,8 @@
 #include "kunde.h"
+#include "qmessagebox.h"
 #include "qsqlquery.h"
 #include <QString>
+#include <QDate>
 
 using namespace std;
 
@@ -136,7 +138,7 @@ QString Kunde::getTitel()
 }
 
 // sql functions
-void Kunde::updateKunde(int anrede, QString name, QString vorname, QString strasse, int hausNr, int ort, int telefon, QString geburtsdatum, QString email, QString titel)
+void Kunde::updateKunde(int anrede, QString name, QString vorname, QString strasse, QString hausNr, int ort, QString telefon, QDate geburtsdatum, QString email, QString titel)
 {
     QSqlQuery query;
 
@@ -169,7 +171,7 @@ void Kunde::updateKunde(int anrede, QString name, QString vorname, QString stras
 
 void Kunde::updateKunde()
 {
-    //this->updateKunde(this->anrede, this->name, this->vorname, this->strasse, this->hausnummer, this->ort, this->telefon, this->geburtsdatum, this->email, this->titel);
+    this->updateKunde(this->anrede, this->name, this->vorname, this->strasse, this->hausnummer, this->ort, this->telefon, this->geburtsdatum, this->email, this->titel);
 }
 
 void Kunde::saveKunde()
@@ -195,32 +197,9 @@ void Kunde::saveKunde()
 
     query.exec();
 
-    QSqlQuery query2;
-    query2.prepare("SELECT ID_Kunde FROM kunden WHERE"
-                  "Anrede = :anrede,"
-                  "Name = :name,"
-                  "Vorname = :vorname,"
-                  "Straße = :strasse,"
-                  "Hausnummer = :hausnr,"
-                  "ID_Ort = :ort,"
-                  "Telefon = :telefon,"
-                  "Geburtsdatum = :geb,"
-                  "Email = :email,"
-                  "Titel = :titel");
-
-    query2.bindValue(":anrede", this->anrede);
-    query2.bindValue(":name", this->name);
-    query2.bindValue(":vorname", this->vorname);
-    query2.bindValue(":strasse", this->strasse);
-    query2.bindValue(":hausnr", this->hausnummer);
-    query2.bindValue(":ort", this->ort);
-    query2.bindValue(":telefon", this->telefon);
-    query2.bindValue(":geb", this->geburtsdatum);
-    query2.bindValue(":email", this->email);
-    query2.bindValue(":titel", this->titel);
-
-    query2.exec();
-
+    QMessageBox msgBox;
+    msgBox.setText(query.lastInsertId().toString());
+    msgBox.exec();
 
 }
 
