@@ -1,140 +1,103 @@
-#include "kunde.h"
+#include "lieferant.h"
 #include <QString>
 
 // Konstruktoren
-Kunde::Kunde()
+lieferant::lieferant()
 {
     this->id = 0;
 }
 
-Kunde::Kunde(int id, int anrede, QString name, QString vorname, QString strasse,
-             QString hausnr, int ort, QString telefon, QDate geburtsdatum,
-             QString email, QString titel)
+lieferant::lieferant(int id, int anrede, QString name, QString Ansprechpartner, QString strasse,
+             QString hausnr, int ort, QString telefon)
 {
     this->id = id;
     setAnrede(anrede);
     setName(name);
-    setVorname(vorname);
+    setAnsprechpartner(Ansprechpartner);
     setStrasse(strasse);
     setHausNr(hausnr);
     setOrt(ort);
     setTelefon(telefon);
-    setGeburtsdatum(geburtsdatum);
-    setEmail(email);
-    setTitel(titel);
+
 }
 
 // setter
-void Kunde::setAnrede(int anrede)
+void lieferant::setAnrede(int anrede)
 {
     this->anrede = anrede;
 }
 
-void Kunde::setName(QString name)
+void lieferant::setName(QString name)
 {
     this->name = name;
 }
 
-void Kunde::setVorname(QString vorname)
+void lieferant::setAnsprechpartner(QString Ansprechpartner)
 {
-    this->vorname = vorname;
+    this->Ansprechpartner = Ansprechpartner;
 }
 
-void Kunde::setStrasse(QString strasse)
+void lieferant::setStrasse(QString strasse)
 {
     this->strasse = strasse;
 }
 
-void Kunde::setHausNr(QString hausnr)
+void lieferant::setHausNr(QString hausnr)
 {
     this->hausnummer = hausnr;
 }
 
-void Kunde::setOrt(int ort)
+void lieferant::setOrt(int ort)
 {
     this->ort = ort;
 }
 
-void Kunde::setTelefon(QString telefon)
+void lieferant::setTelefon(QString telefon)
 {
     this->telefon = telefon;
 }
 
-void Kunde::setGeburtsdatum(QDate geburtsdatum)
-{
-    this->geburtsdatum = geburtsdatum;
-}
-
-void Kunde::setEmail(QString email)
-{
-    this->email = email;
-}
-
-void Kunde::setTitel(QString titel)
-{
-    this->titel = titel;
-}
 
 
 // getter
-int Kunde::getID()
+int lieferant::getID()
 {
     return this->id;
 }
 
-int Kunde::getAnrede()
+int lieferant::getAnrede()
 {
     return this->anrede;
 }
 
-QString Kunde::getName()
+QString lieferant::getName()
 {
     return this->name;
 }
 
-QString Kunde::getVorname()
+QString lieferant::getAnsprechpartner()
 {
-    return this->vorname;
+    return this->Ansprechpartner;
 }
 
-QString Kunde::getStrasse()
+QString lieferant::getStrasse()
 {
     return this->strasse;
 }
 
-QString Kunde::getHausNr()
+QString lieferant::getHausNr()
 {
     return this->hausnummer;
 }
 
-int Kunde::getOrt()
+int lieferant::getOrt()
 {
     return this->ort;
 }
 
-QString Kunde::getTelefon()
+QString lieferant::getTelefon()
 {
     return this->telefon;
-}
-
-QDate Kunde::getGeburtsdatum()
-{
-    return this->geburtsdatum;
-}
-
-QString Kunde::getEmail()
-{
-    return this->email;
-}
-
-QString Kunde::getTitel()
-{
-    return this->titel;
-}
-
-QString Kunde::getDisplayText()
-{
-    return this->name + " " + this->vorname;
 }
 
 

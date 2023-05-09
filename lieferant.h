@@ -1,57 +1,47 @@
-#ifndef KUNDE_H
-#define KUNDE_H
+#ifndef LIEFERANT_H
+#define LIEFERANT_H
 
 #include <QString>
 #include <QDate>
 
-class Kunde
+class lieferant
 {
 public:
-    Kunde();
-    Kunde(int id, int anrede, QString name, QString vorname, QString strasse,
-          QString hausnr, int ort, QString telefon, QDate geburtsdatum,
-          QString email, QString titel);
+    lieferant();
+    lieferant(int id, int anrede, QString name, QString Ansprechpartner, QString strasse,
+          QString hausnr, int ort, QString telefon);
+
+
 
     void setAnrede(int anrede);
     void setName(QString name);
-    void setVorname(QString vorname);
+    void setAnsprechpartner(QString Ansprechpartner);
     void setStrasse(QString strasse);
     void setHausNr(QString hausnr);
     void setOrt(int ort);
     void setTelefon(QString telefon);
-    void setGeburtsdatum(QDate geburtsdatum);
-    void setEmail(QString email);
-    void setTitel(QString titel);
 
     int getID();
     int getAnrede();
     QString getName();
-    QString getVorname();
+    QString getAnsprechpartner();
     QString getStrasse();
     QString getHausNr();
     int getOrt();
     QString getTelefon();
-    QDate getGeburtsdatum();
-    QString getEmail();
-    QString getTitel();
-
-    QString getDisplayText();
 
 private:
     int id;
     int anrede;
     QString name;
-    QString vorname;
+    QString Ansprechpartner;
     QString strasse;
     QString hausnummer;
     int ort;
     QString telefon;
-    QDate geburtsdatum;
-    QString email;
-    QString titel;
 
 };
 
 
 
-#endif // KUNDE_H
+#endif // LIEFERANT_H
