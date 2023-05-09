@@ -297,6 +297,87 @@ void OverviewKunde::LoadCustomers()
 
 //Eingabeüberprüfung der Formularfelder
 bool OverviewKunde::VerifyInput() {
+    QString email = ui->mail->toPlainText();
+    QString firstName = ui->firstname->toPlainText();
+    QString lastName = ui->name->toPlainText();
+    QString birthdate = ui->birthdate->text();
+    QString street = ui->street->toPlainText();
+    QString phone = ui->phone->toPlainText();
+    QString nr = ui->streetnr->toPlainText();
+    QComboBox *comboBoxSalutation = ui->salutation;
+    QComboBox *comboBoxOrt = ui->ort;
+
+    QRegularExpression regexFirstName("[A-Za-z]{2,40}");
+    QRegularExpression regexLastName("[A-Za-z]{2,40}");
+    QRegularExpression regexBirthdate("^(0[1-9]|[1-2][0-9]|3[0-1])(0[1-9]|1[0-2])[1-2][0-9]{3}$");
+    QRegularExpression regexStreet("[A-Za-z]{2,40}");
+    QRegularExpression regexPhone("\\d{5,}");
+    QRegularExpression regexNr("\\d{1,}");
+
+    if(!email.isEmpty())
+    {
+       QRegularExpression regexEmail("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[A-Za-z]{0,}");
+        if(!email.contains(regexEmail))
+        {
+            QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+            ui->mail->setFocus();
+            ui->mail->selectAll();
+            return false;
+        }
+    }
+    if(!lastName.contains(regexLastName))
+    {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Namen ein.");
+        ui->name->setFocus();
+        ui->name->selectAll();
+        return false;
+    }
+
+    if(!firstName.contains(regexFirstName))
+    {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Vornamen ein.");
+        ui->firstname->setFocus();
+        ui->firstname->selectAll();
+        return false;
+    }
+
+    if(!street.contains(regexStreet))
+    {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie ein gültiges Straße ein.");
+        ui->street->setFocus();
+        ui->birthdate->selectAll();
+        return false;
+    }
+    if(!phone.contains(regexPhone))
+    {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Telefonnummer ein (mindestens 5 Ziffern).");
+        ui->phone->setFocus();
+        ui->phone->selectAll();
+        return false;
+    }
+    if(!nr.contains(regexNr))
+    {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Nr ein");
+        ui->streetnr->setFocus();
+        ui->streetnr->selectAll();
+        return false;
+    }
+
+
+    if (comboBoxSalutation->currentIndex() == -1) {
+        QMessageBox::warning(this, "Fehler", "Bitte wählen Sie eine Anrede aus.");
+        comboBoxSalutation->setFocus();
+        return false;
+    }
+    if (comboBoxOrt->currentIndex() == -1) {
+        QMessageBox::warning(this, "Fehler", "Bitte wählen Sie ein Ort aus.");
+        comboBoxOrt->setFocus();
+        return false;
+    }
+
+
+
+
     return true;
 }
 
