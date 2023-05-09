@@ -7,6 +7,7 @@
 #include <qlistwidget.h>
 #include <mainwindow.h>
 #include "qsqlerror.h"
+#include "QSqlQueryModel"
 
 
 
@@ -36,32 +37,70 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         return;
     }
 
-    ui->artikelListe->clear();
+   // ui->artikelListe->clear();
 
     // Suche nach Artikel mit dem eingegebenen Text im Namen
     QSqlQuery queryArtikel;
-    queryArtikel.prepare("SELECT * FROM kunden WHERE Name LIKE :name");
-    queryArtikel.bindValue(":name", "%" + searchText + "%");
+    queryArtikel.prepare("SELECT * FROM artikel WHERE Artikelname LIKE :artikel");
+    queryArtikel.bindValue(":artikel", "%" + searchText + "%");
 
     if (!queryArtikel.exec()) {
         // Fehler beim Ausführen der Abfrage
-        qDebug() << "Fehler beim Suchen nach Kunden:";
+        qDebug() << "Fehler beim Suchen nach Artikel:";
         qDebug() << queryArtikel.lastError().text();
         return;
     }
 
     // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
     while (queryArtikel.next()) {
-        QString customerName = queryArtikel.value("Name").toString();
-        QString customerAddress = queryArtikel.value("Straße").toString() + " " + queryArtikel.value("Hausnummer").toString();
-        QString customerCity = queryArtikel.value("ID_Ort").toString();
-        QString customerPhone = queryArtikel.value("Telefon").toString();
-        QString customerId = queryArtikel.value("ID_Kunde").toString();
+        QString artikelName = queryArtikel.value("Artikelname").toString();
+        QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
+        QString artikelID = queryArtikel.value("Artikelnummer").toString();
 
-        QListWidgetItem *itemArtikel = new QListWidgetItem(ui->artikelListe);
-        itemArtikel->setText(customerName);
-        itemArtikel->setData(Qt::UserRole, customerId);
-        itemArtikel->setToolTip("Adresse: " + customerAddress + "\n" + "ID_Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);
+
+        QSqlQueryModel *modelArtikel = new QSqlQueryModel();
+
+        QSqlQuery queryTabelle;
+        queryTabelle.prepare("SELECT Artikelname, Preis_Netto from artikel WHERE Artikelname LIKE :artikelTest");
+        queryTabelle.bindValue(":artikelTest", "%" + searchText + "%");
+
+        /*("SELECT b.Bestelldatum, a.Artikelname, z.Menge, "
+         "CONCAT(a.Preis_Netto, ' €') AS Preis_Netto, "
+         "CONCAT(z.Menge * a.Preis_Netto, ' €') AS Gesamtpreis_Netto "
+         "FROM bestellungen b "
+         "INNER JOIN kunden k ON b.ID_Kunde = k.ID_Kunde "
+         "INNER JOIN zuordnung_bestellungen_artikel z ON b.ID_Bestellung = z.ID_Bestellung "
+         "INNER JOIN artikel a ON z.ID_Artikel = a.Artikelnummer "
+         "WHERE b.ID_Kunde = :customerId "
+         "ORDER BY b.Bestelldatum ASC, a.Artikelname");*/
+
+        queryTabelle.bindValue(":artikelID", artikelID);
+        if (!queryTabelle.exec()) {
+            QMessageBox::critical(this, "Fehler", "Fehler bei der Datenbankabfrage: " + queryTabelle.lastError().text());
+            return;
+        }
+        queryTabelle.exec();
+
+
+        modelArtikel->setQuery(std::move(queryTabelle));
+        ui->artikelListe->setModel(modelArtikel);
+        ui->artikelListe->resizeColumnsToContents();
+        int columnCountA = modelArtikel->columnCount();
+        int availableWidthA = ui->artikelListe->viewport()->width();
+        int defaultColumnWidthA = availableWidthA / columnCountA;
+
+        for (int i = 0; i < columnCountA; ++i) {
+            ui->artikelListe->setColumnWidth(i, defaultColumnWidthA);
+        }
+
+        ui->artikelListe->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+        ui->artikelListe->horizontalHeader()->setMaximumSectionSize(availableWidthA);
+
+
+        /*QTableView *itemArtikel = new QTableView(ui->artikelListe);
+        itemArtikel->setText(artikelName + artikelNetto);
+        itemArtikel->setData(Qt::UserRole, artikelID);
+        /*itemArtikel->setToolTip("Adresse: " + customerAddress + "\n" + "ID_Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);*/
     }
 
 }
