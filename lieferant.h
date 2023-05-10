@@ -30,6 +30,11 @@ public:
     int getOrt();
     QString getTelefon();
 
+    void updateLieferant(int anrede, QString name, QString Ansprechpartner, QString strasse, QString hausNr, int ort, QString telefon);
+    void updateLieferant();
+    void saveLieferant();
+    void deleteLieferant();
+
 private:
     int id;
     int anrede;

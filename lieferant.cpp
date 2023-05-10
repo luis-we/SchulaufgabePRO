@@ -1,5 +1,8 @@
 #include "lieferant.h"
 #include <QString>
+#include "qsqlquery.h"
+
+using namespace std;
 
 // Konstruktoren
 lieferant::lieferant()
@@ -101,6 +104,79 @@ QString lieferant::getTelefon()
 }
 
 
+// SQL FUNKTIONEN ANPASSEN
+void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartner, QString strasse, QString hausNr, int ort, QString telefon)
+{
+    QVariant nullVariant = QVariant::fromValue<QString>(QString());
+    nullVariant.clear();
+
+    QSqlQuery query;
+
+    //
+    query.prepare("UPDATE lieferant SET "   //ANPASSEN!!
+                  "Anrede = :anrede, "
+                  "Name = :name, "
+                  "Vorname = :Ansprechpartner, "
+                  "Straße = :strasse, "
+                  "Hausnummer = :hausnr, "
+                  "ID_Ort = :ort, "
+                  "Telefon = :telefon, "
+                  "WHERE ID_Lieferant = :lieferant");
+
+    //
+    query.bindValue(":anrede", anrede);
+    query.bindValue(":name", name);
+    query.bindValue(":vorname", Ansprechpartner);
+    query.bindValue(":strasse", strasse);
+    query.bindValue(":hausnr", hausNr);
+    query.bindValue(":ort", ort);
+    query.bindValue(":telefon", telefon);
+    query.bindValue(":lieferant", this->id);
+
+    //
+    query.exec();
+}
+
+void Kunde::updateKunde()
+{
+    // 
+    this->updateKunde(this->anrede, this->name, this->Ansprechpartner, this->strasse, this->hausnummer, this->ort, this->telefon);
+}
+
+void lieferant::saveLieferant()
+{
+    QVariant nullVariant = QVariant::fromValue<QString>(QString());
+    nullVariant.clear();
+
+    QSqlQuery query;
+    query.prepare("INSERT INTO lieferant"
+                  "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon) " //ANPASSEN!!
+                  "VALUES(:anrede, :name, :Ansprechpartner, :strasse,"
+                  ":hausnr, :ort, :telefon)");
+
+    //
+    query.bindValue(":anrede", this->anrede);
+    query.bindValue(":name", this->name);
+    query.bindValue(":Ansprechpartner", this->Ansprechpartner);
+    query.bindValue(":strasse", this->strasse);
+    query.bindValue(":hausnr", this->hausnummer);
+    query.bindValue(":ort", this->ort);
+    query.bindValue(":telefon", this->telefon);
+
+    query.exec();
+
+    this->id = query.lastInsertId().toInt();
+
+}
+
+void lieferant::deleteLieferant()
+{
+    //
+    QSqlQuery query;
+    query.prepare("DELETE FROM lieferant WHERE ID_Lieferant = :id");
+    query.bindValue(":id", this->id);
+    query.exec();
+}
 
 
 
