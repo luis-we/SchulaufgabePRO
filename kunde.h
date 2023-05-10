@@ -4,6 +4,8 @@
 #include <QString>
 #include <QDate>
 
+using namespace std;
+
 class Kunde
 {
 public:
@@ -23,7 +25,7 @@ public:
     void setEmail(QString email);
     void setTitel(QString titel);
 
-    int getID();
+    int getId();
     int getAnrede();
     QString getName();
     QString getVorname();
@@ -36,6 +38,11 @@ public:
     QString getTitel();
 
     QString getDisplayText();
+
+    void updateKunde(int anrede, QString name, QString vorname, QString strasse, QString hausNr, int ort, QString telefon, QDate geburtsdatum, QString email, QString titel);
+    void updateKunde();
+    void saveKunde();
+    void deleteKunde();
 
 private:
     int id;
