@@ -1,5 +1,4 @@
 #include "kunde.h"
-#include "qmessagebox.h"
 #include "qsqlquery.h"
 #include <QString>
 #include <QDate>
@@ -140,20 +139,24 @@ QString Kunde::getTitel()
 // sql functions
 void Kunde::updateKunde(int anrede, QString name, QString vorname, QString strasse, QString hausNr, int ort, QString telefon, QDate geburtsdatum, QString email, QString titel)
 {
+    QVariant nullVariant = QVariant::fromValue<QString>(QString());
+    nullVariant.clear();
+
     QSqlQuery query;
 
-    query.prepare("UPDATE kunden SET"
-                  "Anrede = :anrede,"
-                  "Name = :name,"
-                  "Vorname = :vorname,"
-                  "Straße = :strasse,"
-                  "Hausnummer = :hausnr,"
-                  "ID_Ort = :ort,"
-                  "Telefon = :telefon,"
-                  "Geburtsdatum = :geb,"
-                  "Email = :email,"
-                  "Titel = :titel"
+    query.prepare("UPDATE kunden SET "
+                  "Anrede = :anrede, "
+                  "Name = :name, "
+                  "Vorname = :vorname, "
+                  "Straße = :strasse, "
+                  "Hausnummer = :hausnr, "
+                  "ID_Ort = :ort, "
+                  "Telefon = :telefon, "
+                  "Geburtsdatum = :geb, "
+                  "Email = :email, "
+                  "Titel = :titel "
                   "WHERE ID_Kunde = :kunde");
+
     query.bindValue(":anrede", anrede);
     query.bindValue(":name", name);
     query.bindValue(":vorname", vorname);
@@ -162,8 +165,8 @@ void Kunde::updateKunde(int anrede, QString name, QString vorname, QString stras
     query.bindValue(":ort", ort);
     query.bindValue(":telefon", telefon);
     query.bindValue(":geb", geburtsdatum);
-    query.bindValue(":email", email);
-    query.bindValue(":titel", titel);
+    query.bindValue(":email", email.isEmpty() ? nullVariant : email);
+    query.bindValue(":titel", titel.isEmpty() ? nullVariant : titel);
     query.bindValue(":kunde", this->id);
 
     query.exec();
@@ -176,6 +179,9 @@ void Kunde::updateKunde()
 
 void Kunde::saveKunde()
 {
+    QVariant nullVariant = QVariant::fromValue<QString>(QString());
+    nullVariant.clear();
+
     QSqlQuery query;
     query.prepare("INSERT INTO kunden"
                   "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon, "
@@ -192,8 +198,8 @@ void Kunde::saveKunde()
     query.bindValue(":ort", this->ort);
     query.bindValue(":telefon", this->telefon);
     query.bindValue(":geb", this->geburtsdatum);
-    query.bindValue(":email", this->email);
-    query.bindValue(":titel", this->titel);
+    query.bindValue(":email", this->email.isEmpty() ? nullVariant : this->email);
+    query.bindValue(":titel", this->titel.isEmpty() ? nullVariant : this->titel);
 
     query.exec();
 

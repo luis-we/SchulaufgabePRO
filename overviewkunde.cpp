@@ -110,7 +110,7 @@ void OverviewKunde::LoadLocations()
 void OverviewKunde::DeleteCustomer()
 {
     //Löscht den Kunden aus der Datenbank
-    //m_selectedCustomer->GetValue()->delete();
+    m_selectedCustomer->GetValue()->deleteKunde();
     //Löscht den Kunden aus der Kundenliste
     delete m_selectedCustomer;
     //Setzt den ausgewählten Kunden auf einen null pointer
@@ -246,13 +246,13 @@ void OverviewKunde::SaveCustomer(bool created)
 
     if(created) {
         //Erstellen eines neuen Kundeneintrags in der Datenbank
-        //customer->create();
+        customer->saveKunde();
         //Laden der Kundendetails in das Formular
         LoadCustomer(customer);
     }
     else {
         //Speichern der veränderten Kundendaten
-        //customer->save();
+        customer->updateKunde();
     }
 
     //Aktualisieren des Button Textes
