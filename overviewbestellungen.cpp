@@ -13,6 +13,7 @@ OverviewBestellungen::OverviewBestellungen(MainWindow* parent) : QWidget(parent)
     this->parent = parent;
 
     connect(ui->search_field, &QLineEdit::textChanged, this, &OverviewBestellungen::searchCustomer);
+
 }
 
 OverviewBestellungen::~OverviewBestellungen()
@@ -36,7 +37,10 @@ void OverviewBestellungen::searchCustomer(const QString &text)
 
     // Suche nach Kunden mit dem eingegebenen Text im Namen
     QSqlQuery query;
-    query.prepare("SELECT * FROM kunden WHERE Name LIKE :name");
+    query.prepare("SELECT k.*, o.PLZ, o.Ort, a.Anrede AS Anredetext FROM kunden k "
+                  "INNER JOIN ort o ON k.ID_Ort = o.ID_Ort "
+                  "INNER JOIN anrede a ON k.Anrede = a.ID_Anrede "
+                  "WHERE k.Name LIKE :name");
     query.bindValue(":name", "%" + text + "%");
 
     if (!query.exec()) {
@@ -48,16 +52,19 @@ void OverviewBestellungen::searchCustomer(const QString &text)
 
     // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
     while (query.next()) {
+        QString customerAnrede = query.value("Anredetext").toString();
+        QString customerTitel = query.value("Titel").toString();
+        QString customerVorname = query.value("Vorname").toString();
         QString customerName = query.value("Name").toString();
         QString customerAddress = query.value("Straße").toString() + " " + query.value("Hausnummer").toString();
-        QString customerCity = query.value("ID_Ort").toString();
+        QString customerCity = query.value("PLZ").toString() + " " + query.value("Ort").toString();
         QString customerPhone = query.value("Telefon").toString();
         QString customerId = query.value("ID_Kunde").toString();
 
         QListWidgetItem *item = new QListWidgetItem(ui->customer_list);
-        item->setText(customerName);
+        item->setText(customerAnrede + " " + customerTitel + " " + customerVorname + " " + customerName);
         item->setData(Qt::UserRole, customerId);
-        item->setToolTip("Adresse: " + customerAddress + "\n" + "ID_Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);
+        item->setToolTip("Adresse: " + customerAddress + "\n" + "Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);
     }
 }
 
