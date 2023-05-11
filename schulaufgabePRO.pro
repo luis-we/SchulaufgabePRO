@@ -1,4 +1,5 @@
-QT       += core gui
+QT += core gui
+QT += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,17 +10,25 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    lieferant.cpp \
+    listitem.cpp \
+    kunde.cpp \
     main.cpp \
     mainwindow.cpp \
     overviewartikel.cpp \
     overviewbestellungen.cpp \
+    overviewbestellungen_bestellung.cpp \
     overviewkunde.cpp \
     overviewlieferanten.cpp
 
 HEADERS += \
+    lieferant.h \
+    listitem.h \
+    kunde.h \
     mainwindow.h \
     overviewartikel.h \
     overviewbestellungen.h \
+    overviewbestellungen_bestellung.h \
     overviewkunde.h \
     overviewlieferanten.h
 
@@ -27,6 +36,7 @@ FORMS += \
     mainwindow.ui \
     overviewartikel.ui \
     overviewbestellungen.ui \
+    overviewbestellungen_bestellung.ui \
     overviewkunde.ui \
     overviewlieferanten.ui
 

@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 
 #include <QStackedWidget>
+#include <QSqlDatabase>
+#include <QMessageLogger>
 
 MainWindow::MainWindow(QWidget* parent, QStackedWidget* stack) : QMainWindow(parent), ui(new Ui::MainWindow)
 {
@@ -15,6 +17,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+QStackedWidget* MainWindow::GetStack()
+{
+    return this->stack;
+}
 
 void MainWindow::back_to_main()
 {
