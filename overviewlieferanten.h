@@ -38,6 +38,7 @@ private slots:
     void on_pushButton_2_bearbeiten_clicked();
     void on_pushButton_3_loeschen_clicked();
     void on_pushButton_leeren_clicked();
+    void on_textBrowser_ort_currentIndexChanged(int index);
 
 
 private:
@@ -56,7 +57,7 @@ private:
     bool UeberpruefeEingabe();
     QString HolePLZVonOrt(int loc);
     void WaehleLieferant(ListItem<lieferant>* delivery);
-    void Ortswechsel(int index);
+    
 
     ListItem<lieferant>* ErstelleLieferant(lieferant* delivery);
     ListItem<lieferant>* m_ausgewaelterLieferant;

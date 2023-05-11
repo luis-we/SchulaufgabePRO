@@ -395,7 +395,7 @@ void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
 }
 
 //Wenn Ort gewechselt wird -> PLZ anpassen
-void OverviewLieferanten::Ortswechsel(int index)
+void OverviewLieferanten::on_textBrowser_ort_currentIndexChanged(int index)
 {
     //
     if(index == -1) {
@@ -405,10 +405,10 @@ void OverviewLieferanten::Ortswechsel(int index)
     }
 
     //
-    int location = ui->textBrowser_ort->currentData().value<int>();
+    int loc = ui->textBrowser_ort->currentData().value<int>();
 
     //
-    ui->textBrowser_plz->setText(HolePLZVonOrt(location));
+    ui->textBrowser_plz->setText(HolePLZVonOrt(loc));
 }
 
 
@@ -425,8 +425,11 @@ QString OverviewLieferanten::HolePLZVonOrt(int loc)
     // Überprüfung der Datenbank Abfrage
     if (!query.exec()) {
         qDebug() << "Fehler bei der Suchen nach PLZ: " << query.lastError().text();
+        qDebug() << query.executedQuery();
         return plz;
     }
+
+    qDebug() << query.executedQuery();
 
     // Schleifendurchlauf zum Auslesen und Speichern der Postleitzahl
     while (query.next()) {

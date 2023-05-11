@@ -85,25 +85,26 @@ void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartne
 
     //
     query.prepare("UPDATE lieferant SET "   //ANPASSEN!!
-                  "Anrede = :anrede, "
-                  "Name = :name, "
-                  "Vorname = :Ansprechpartner, "
+                  "Anrede_Ansprechpartner = :anrede, "
+                  "Lieferantenname = :name, "
+                  "Ansprechpartner  = :Ansprechpartner, "
                   "Straße = :strasse, "
                   "Hausnummer = :hausnr, "
                   "ID_Ort = :ort, "
-                  "Telefon = :telefon, "
+                  "Telefon = :telefon "
                   "WHERE ID_Lieferant = :lieferant");
 
     //
     query.bindValue(":anrede", anrede);
     query.bindValue(":name", name);
-    query.bindValue(":vorname", Ansprechpartner);
+    query.bindValue(":Ansprechpartner", Ansprechpartner);
     query.bindValue(":strasse", strasse);
     query.bindValue(":hausnr", hausNr);
     query.bindValue(":ort", ort);
     query.bindValue(":telefon", telefon);
     query.bindValue(":lieferant", this->id);
 
+    
     //
     query.exec();
 }
@@ -124,9 +125,8 @@ void lieferant::saveLieferant()
     QSqlQuery query;
 
     query.prepare("INSERT INTO lieferant"
-                  "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon) " //ANPASSEN!!
-                  "VALUES(:anrede, :name, :Ansprechpartner, :strasse,"
-                  ":hausnr, :ort, :telefon)");
+                  "(Anrede_Ansprechpartner , Lieferantenname, Ansprechpartner, Straße, Hausnummer, ID_Ort, Telefon) " //ANPASSEN!!
+                  "VALUES(:anrede, :name, :Ansprechpartner, :strasse, :hausnr, :ort, :telefon)");
 
     //
     query.bindValue(":anrede", this->anrede);
@@ -137,9 +137,10 @@ void lieferant::saveLieferant()
     query.bindValue(":ort", this->ort);
     query.bindValue(":telefon", this->telefon);
 
-    query.exec();
-
     this->id = query.lastInsertId().toInt();
+
+    //
+    query.exec();
 
 }
 
