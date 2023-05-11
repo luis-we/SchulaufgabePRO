@@ -26,84 +26,56 @@ lieferant::lieferant(int id, int anrede, QString name, QString Ansprechpartner, 
 
 // Setterfunktionen
 void lieferant::setAnrede(int anrede)
-{
-    this->anrede = anrede;
-}
+{this->anrede = anrede;}
 
 void lieferant::setAnsprechpartner(QString Ansprechpartner)
-{
-    this->Ansprechpartner = Ansprechpartner;
-}
+{this->Ansprechpartner = Ansprechpartner;}
 
 void lieferant::setStrasse(QString strasse)
-{
-    this->strasse = strasse;
-}
+{this->strasse = strasse;}
 
 void lieferant::setHausNr(QString hausnr)
-{
-    this->hausnummer = hausnr;
-}
+{this->hausnummer = hausnr;}
 
 void lieferant::setName(QString name)
-{
-    this->name = name;
-}
+{this->name = name;}
 
 void lieferant::setOrt(int ort)
-{
-    this->ort = ort;
-}
+{this->ort = ort;}
 
 void lieferant::setTelefon(QString telefon)
-{
-    this->telefon = telefon;
-}
+{this->telefon = telefon;}
 
 
 // Getterfunktionen
 int lieferant::getID()
-{
-    return this->id;
-}
+{return this->id;}
 
 int lieferant::getAnrede()
-{
-    return this->anrede;
-}
+{return this->anrede;}
 
 QString lieferant::getName()
-{
-    return this->name;
-}
+{return this->name;}
 
 QString lieferant::getAnsprechpartner()
-{
-    return this->Ansprechpartner;
-}
+{return this->Ansprechpartner;}
 
 QString lieferant::getStrasse()
-{
-    return this->strasse;
-}
+{return this->strasse;}
 
 QString lieferant::getHausNr()
-{
-    return this->hausnummer;
-}
+{return this->hausnummer;}
 
 int lieferant::getOrt()
-{
-    return this->ort;
-}
+{return this->ort;}
 
 QString lieferant::getTelefon()
-{
-    return this->telefon;
-}
+{return this->telefon;}
 
 
-// SQL FUNKTIONEN ANPASSEN
+// SQL FUNKTIONEN
+
+// 
 void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartner, QString strasse, QString hausNr, int ort, QString telefon)
 {
     QVariant nullVariant = QVariant::fromValue<QString>(QString());
@@ -136,18 +108,21 @@ void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartne
     query.exec();
 }
 
+//
 void lieferant::updateLieferant()
 {
     // 
     this->updateLieferant(this->anrede, this->name, this->Ansprechpartner, this->strasse, this->hausnummer, this->ort, this->telefon);
 }
 
+//
 void lieferant::saveLieferant()
 {
     QVariant nullVariant = QVariant::fromValue<QString>(QString());
     nullVariant.clear();
 
     QSqlQuery query;
+
     query.prepare("INSERT INTO lieferant"
                   "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon) " //ANPASSEN!!
                   "VALUES(:anrede, :name, :Ansprechpartner, :strasse,"
@@ -176,7 +151,4 @@ void lieferant::deleteLieferant()
     query.bindValue(":id", this->id);
     query.exec();
 }
-
-
-
 

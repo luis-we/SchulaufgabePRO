@@ -159,7 +159,6 @@ void OverviewLieferanten::LadeLieferant(lieferant* delivery)
     ui->textBrowser_lieferantenhsnr->setText(delivery->getHausNr());
     ui->textBrowser_lieferantentelefon->setText(delivery->getTelefon());
     
-
     // Stelle DropDown auf die passenden Werte ein
     ui->textBrowser_anrede->setCurrentIndex(ui->textBrowser_anrede->findData(delivery->getAnrede()));
     ui->textBrowser_ort->setCurrentIndex(ui->textBrowser_ort->findData(delivery->getOrt()));
@@ -259,6 +258,7 @@ void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
 
 void OverviewLieferanten::on_pushButton_leeren_clicked()
 {
+    // Knopf zum leeren der Formularfelder ruft nur Fkt auf
     LeereForm();
 }
 
@@ -267,6 +267,7 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
     // Auslesen des aktuell ausgewählten Kunden
     lieferant* delivery = m_ausgewaelterLieferant->GetValue();
 
+    //Konvertieren der Daten
     delivery->setAnrede(ui->textBrowser_anrede->currentData().value<int>());
     delivery->setName(ui->textBrowser_lieferantenname->toPlainText());
     delivery->setStrasse(ui->textBrowser_lieferantenstrasse->toPlainText());
@@ -275,45 +276,35 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
     delivery->setTelefon(ui->textBrowser_lieferantentelefon->toPlainText());
     delivery->setAnsprechpartner(ui->textBrowser_lieferantenansprechpartner->toPlainText());
 
-   if(created) {
-        //
+    // Speichern des Kunden in der Datenbank
+    if(created) {
+        // Speichern Lieferant in DB
         delivery->saveLieferant();
 
-        //
+        // Ladne Lieferant in Liste
         LadeLieferant(delivery);
-    }
-    else {
-        //
+     }
+     else {
+        // Update Lieferant in DB
         delivery->updateLieferant();
-    }
+     }
 
-    //
-    m_ausgewaelterLieferant->GetButton()->setText(delivery->getName());
+     // Aktualisieren Listeneintrags
+     m_ausgewaelterLieferant->GetButton()->setText(delivery->getName());
 }
 
 void OverviewLieferanten::LoescheLieferant()
 {
-    //
-    
+    // Löschen vom Lieferanten aus Datenbank
     m_ausgewaelterLieferant->GetValue()->deleteLieferant();
 
     //
     delete m_ausgewaelterLieferant;
-    //
 }
 
 bool OverviewLieferanten::UeberpruefeEingabe()
 {
-   
-   //delivery->setName(ui->textBrowser_lieferantenname->toPlainText());
-   //delivery->setStrasse(ui->textBrowser_lieferantenstrasse->toPlainText());
-   //delivery->setHausNr(ui->textBrowser_lieferantenhsnr->toPlainText());
-   //delivery->setOrt(ui->textBrowser_ort->currentData().value<int>());
-   //delivery->setTelefon(ui->textBrowser_lieferantentelefon->toPlainText());
-   //delivery->setAnsprechpartner(ui->textBrowser_lieferantenansprechpartner->toPlainText());
-    
-    
-    
+      
     //
     QString lieferantenname = ui->textBrowser_lieferantenname->toPlainText();
     QString Ansprechpartner = ui->textBrowser_lieferantenansprechpartner->toPlainText();
@@ -323,20 +314,20 @@ bool OverviewLieferanten::UeberpruefeEingabe()
     QComboBox *comboBoxSalutation = ui->textBrowser_anrede;
     QComboBox *comboBoxOrt = ui->textBrowser_ort;
 
-    //
+    // RexEx Voreinstellungen -> Eingabeprüfung
     QRegularExpression regex_Namen("[A-Za-z]{2,40}");
     QRegularExpression regex_Strassen("[A-Za-z]{3,50}");
     QRegularExpression regex_Telefon("^(?=.{5,30}$)[+]?[\\d\\s]+$");
     QRegularExpression regexNr("^\\d{1,4}\\s?[a-zA-Z]?$");
 
-    //
+    // Fkt Anrede & Fehlermeldung bei Falscheingabe
     if(comboBoxSalutation->currentIndex() == -1) {
         QMessageBox::warning(this, "Fehler", "Bitte wählen Sie eine Anrede aus.");
         comboBoxSalutation->setFocus();
         return false;
     }
 
-    //
+    // Fkt Ansprechpartner & Fehlermeldung bei Falscheingabe
     if(!Ansprechpartner.contains(regex_Namen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Namen ein.");
         ui->textBrowser_lieferantenansprechpartner->setFocus();
@@ -344,7 +335,7 @@ bool OverviewLieferanten::UeberpruefeEingabe()
         return false;
     }
 
-    //
+    // Fkt Lieferantenname & Fehlermeldung bei Falscheingabe
     if(!lieferantenname.contains(regex_Namen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Ansprechpartner ein.");
         ui->textBrowser_lieferantenname->setFocus();
@@ -352,14 +343,14 @@ bool OverviewLieferanten::UeberpruefeEingabe()
         return false;
     }
 
-    //
+    // Fkt Straße & Fehlermeldung bei Falscheingabe
     if(!street.contains(regex_Strassen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Straße ein.");
         ui->textBrowser_lieferantenstrasse->setFocus();
         return false;
     }
 
-    //
+    // Fkt Hausnummer & Fehlermeldung bei Falscheingabe
     if(!nr.contains(regexNr)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Hausnummer Nr ein");
         ui->textBrowser_lieferantenstrasse->setFocus();
@@ -367,14 +358,14 @@ bool OverviewLieferanten::UeberpruefeEingabe()
         return false;
     }
 
-    //
+    // Fkt Ort & Fehlermeldung bei Falscheingabe
     if(comboBoxOrt->currentIndex() == -1) {
         QMessageBox::warning(this, "Fehler", "Bitte wählen Sie einen Ort aus.");
         comboBoxOrt->setFocus();
         return false;
     }
 
-    //
+    // Fkt Telefon & Fehlermeldung bei Falscheingabe
     if(!phone.contains(regex_Telefon)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Telefonnummer ein (mindestens 5 Ziffern).");
         ui->textBrowser_lieferantentelefon->setFocus();
@@ -382,11 +373,11 @@ bool OverviewLieferanten::UeberpruefeEingabe()
         return false;
     }
 
-
+    // Wenn  Felder korrekt ausgefüllt -> true
     return true;
 }
 
-
+// Lädt Daten von Lieferant in Form
 void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
 {
     // Abbruch bei wiederholten auswählen eines Kunden
@@ -403,7 +394,7 @@ void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
     LadeLieferant(delivery->GetValue());
 }
 
-//
+//Wenn Ort gewechselt wird -> PLZ anpassen
 void OverviewLieferanten::Ortswechsel(int index)
 {
     //

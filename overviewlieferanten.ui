@@ -95,7 +95,7 @@
   <widget class="QPushButton" name="pushButton_anlegen">
    <property name="geometry">
     <rect>
-     <x>430</x>
+     <x>400</x>
      <y>680</y>
      <width>93</width>
      <height>29</height>
@@ -108,14 +108,14 @@
   <widget class="QPushButton" name="pushButton_2_bearbeiten">
    <property name="geometry">
     <rect>
-     <x>570</x>
+     <x>512</x>
      <y>680</y>
-     <width>93</width>
+     <width>171</width>
      <height>29</height>
     </rect>
    </property>
    <property name="text">
-    <string>Bearbeiten</string>
+    <string>Bearbeiten/Speichern</string>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton_3_loeschen">
