@@ -12,7 +12,6 @@ public:
           QString hausnr, int ort, QString telefon);
 
 
-
     void setAnrede(int anrede);
     void setName(QString name);
     void setAnsprechpartner(QString Ansprechpartner);
@@ -46,7 +45,6 @@ private:
     QString telefon;
 
 };
-
 
 
 #endif // LIEFERANT_H

@@ -24,15 +24,10 @@ lieferant::lieferant(int id, int anrede, QString name, QString Ansprechpartner, 
 
 }
 
-// setter
+// Setterfunktionen
 void lieferant::setAnrede(int anrede)
 {
     this->anrede = anrede;
-}
-
-void lieferant::setName(QString name)
-{
-    this->name = name;
 }
 
 void lieferant::setAnsprechpartner(QString Ansprechpartner)
@@ -50,6 +45,11 @@ void lieferant::setHausNr(QString hausnr)
     this->hausnummer = hausnr;
 }
 
+void lieferant::setName(QString name)
+{
+    this->name = name;
+}
+
 void lieferant::setOrt(int ort)
 {
     this->ort = ort;
@@ -61,8 +61,7 @@ void lieferant::setTelefon(QString telefon)
 }
 
 
-
-// getter
+// Getterfunktionen
 int lieferant::getID()
 {
     return this->id;
@@ -137,10 +136,10 @@ void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartne
     query.exec();
 }
 
-void Kunde::updateKunde()
+void lieferant::updateLieferant()
 {
     // 
-    this->updateKunde(this->anrede, this->name, this->Ansprechpartner, this->strasse, this->hausnummer, this->ort, this->telefon);
+    this->updateLieferant(this->anrede, this->name, this->Ansprechpartner, this->strasse, this->hausnummer, this->ort, this->telefon);
 }
 
 void lieferant::saveLieferant()

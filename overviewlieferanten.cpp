@@ -77,7 +77,6 @@ void OverviewLieferanten::LadeAnreden()
 }
 
 
-
 // Leeren des Forms
 void OverviewLieferanten::LeereForm()
 {
@@ -281,7 +280,7 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
         delivery->saveLieferant();
 
         //
-        LadeLieferanten(delivery);
+        LadeLieferant(delivery);
     }
     else {
         //
@@ -289,33 +288,40 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
     }
 
     //
-    m_ausgewaehlterLieferant->GetButton()->setText(delivery->getName());
+    m_ausgewaelterLieferant->GetButton()->setText(delivery->getName());
 }
 
 void OverviewLieferanten::LoescheLieferant()
 {
     //
     
-    m_ausgewaehlterLieferant->GetValue()->deleteLieferant();
+    m_ausgewaelterLieferant->GetValue()->deleteLieferant();
 
     //
-    delete m_ausgewaehlterLieferant;
+    delete m_ausgewaelterLieferant;
     //
 }
 
 bool OverviewLieferanten::UeberpruefeEingabe()
 {
+   
+   //delivery->setName(ui->textBrowser_lieferantenname->toPlainText());
+   //delivery->setStrasse(ui->textBrowser_lieferantenstrasse->toPlainText());
+   //delivery->setHausNr(ui->textBrowser_lieferantenhsnr->toPlainText());
+   //delivery->setOrt(ui->textBrowser_ort->currentData().value<int>());
+   //delivery->setTelefon(ui->textBrowser_lieferantentelefon->toPlainText());
+   //delivery->setAnsprechpartner(ui->textBrowser_lieferantenansprechpartner->toPlainText());
+    
+    
+    
     //
-    QString titel = ui->titel->toPlainText();
-    QString email = ui->mail->toPlainText();
-    QString firstName = ui->firstname->toPlainText();
-    QString lastName = ui->name->toPlainText();
-    QDate birthdate = ui->birthdate->date();
-    QString street = ui->street->toPlainText();
-    QString phone = ui->phone->toPlainText();
-    QString nr = ui->streetnr->toPlainText();
-    QComboBox *comboBoxSalutation = ui->salutation;
-    QComboBox *comboBoxOrt = ui->ort;
+    QString lieferantenname = ui->textBrowser_lieferantenname->toPlainText();
+    QString Ansprechpartner = ui->textBrowser_lieferantenansprechpartner->toPlainText();
+    QString street = ui->textBrowser_lieferantenstrasse->toPlainText();
+    QString phone = ui->textBrowser_lieferantentelefon->toPlainText();
+    QString nr = ui->textBrowser_lieferantenhsnr->toPlainText();
+    QComboBox *comboBoxSalutation = ui->textBrowser_anrede;
+    QComboBox *comboBoxOrt = ui->textBrowser_ort;
 
     //
     QRegularExpression regex_Namen("[A-Za-z]{2,40}");
@@ -331,34 +337,33 @@ bool OverviewLieferanten::UeberpruefeEingabe()
     }
 
     //
-    if(!lastName.contains(regex_Namen)) {
+    if(!Ansprechpartner.contains(regex_Namen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Namen ein.");
-        ui->name->setFocus();
-        ui->name->selectAll();
+        ui->textBrowser_lieferantenansprechpartner->setFocus();
+        ui->textBrowser_lieferantenansprechpartner->selectAll();
         return false;
     }
 
     //
-    if(!firstName.contains(regex_Namen)) {
+    if(!lieferantenname.contains(regex_Namen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Ansprechpartner ein.");
-        ui->firstname->setFocus();
-        ui->firstname->selectAll();
+        ui->textBrowser_lieferantenname->setFocus();
+        ui->textBrowser_lieferantenname->selectAll();
         return false;
     }
 
     //
     if(!street.contains(regex_Strassen)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Straße ein.");
-        ui->street->setFocus();
-        ui->birthdate->selectAll();
+        ui->textBrowser_lieferantenstrasse->setFocus();
         return false;
     }
 
     //
     if(!nr.contains(regexNr)) {
-        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Nr ein");
-        ui->streetnr->setFocus();
-        ui->streetnr->selectAll();
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Hausnummer Nr ein");
+        ui->textBrowser_lieferantenstrasse->setFocus();
+        ui->textBrowser_lieferantenstrasse->selectAll();
         return false;
     }
 
@@ -372,8 +377,8 @@ bool OverviewLieferanten::UeberpruefeEingabe()
     //
     if(!phone.contains(regex_Telefon)) {
         QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Telefonnummer ein (mindestens 5 Ziffern).");
-        ui->phone->setFocus();
-        ui->phone->selectAll();
+        ui->textBrowser_lieferantentelefon->setFocus();
+        ui->textBrowser_lieferantentelefon->selectAll();
         return false;
     }
 
