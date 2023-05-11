@@ -53,8 +53,8 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 
     // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
     while (queryArtikel.next()) {
-        QString artikelName = queryArtikel.value("Artikelname").toString();
-        QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
+        //QString artikelName = queryArtikel.value("Artikelname").toString();
+       // QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
         QString artikelID = queryArtikel.value("Artikelnummer").toString();
 
 

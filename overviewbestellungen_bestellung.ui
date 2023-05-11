@@ -94,7 +94,7 @@
     <string>Hinzufügen</string>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="warenkorb">
+  <widget class="QTableView" name="warenkorb">
    <property name="geometry">
     <rect>
      <x>120</x>
