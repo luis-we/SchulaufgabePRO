@@ -8,6 +8,7 @@
 #include <mainwindow.h>
 #include "qsqlerror.h"
 #include "QSqlQueryModel"
+#include <QtGui>
 
 
 
@@ -51,11 +52,12 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         return;
     }
 
-    // Fügen Sie jeden gefundenen Kunden zur Liste hinzu
+    // Fügen Sie jeden gefundenen Artikel zur Liste hinzu
     while (queryArtikel.next()) {
-        //QString artikelName = queryArtikel.value("Artikelname").toString();
-       // QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
+        QString artikelName = queryArtikel.value("Artikelname").toString();
+        QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
         QString artikelID = queryArtikel.value("Artikelnummer").toString();
+        double einzelPreis = queryArtikel.value("Preis_Netto").toDouble();
 
 
         QSqlQueryModel *modelArtikel = new QSqlQueryModel();
@@ -63,16 +65,6 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         QSqlQuery queryTabelle;
         queryTabelle.prepare("SELECT Artikelname, Preis_Netto from artikel WHERE Artikelname LIKE :artikelTest");
         queryTabelle.bindValue(":artikelTest", "%" + searchText + "%");
-
-        /*("SELECT b.Bestelldatum, a.Artikelname, z.Menge, "
-         "CONCAT(a.Preis_Netto, ' €') AS Preis_Netto, "
-         "CONCAT(z.Menge * a.Preis_Netto, ' €') AS Gesamtpreis_Netto "
-         "FROM bestellungen b "
-         "INNER JOIN kunden k ON b.ID_Kunde = k.ID_Kunde "
-         "INNER JOIN zuordnung_bestellungen_artikel z ON b.ID_Bestellung = z.ID_Bestellung "
-         "INNER JOIN artikel a ON z.ID_Artikel = a.Artikelnummer "
-         "WHERE b.ID_Kunde = :customerId "
-         "ORDER BY b.Bestelldatum ASC, a.Artikelname");*/
 
         queryTabelle.bindValue(":artikelID", artikelID);
         if (!queryTabelle.exec()) {
@@ -97,10 +89,18 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         ui->artikelListe->horizontalHeader()->setMaximumSectionSize(availableWidthA);
 
 
-        /*QTableView *itemArtikel = new QTableView(ui->artikelListe);
-        itemArtikel->setText(artikelName + artikelNetto);
-        itemArtikel->setData(Qt::UserRole, artikelID);
-        /*itemArtikel->setToolTip("Adresse: " + customerAddress + "\n" + "ID_Ort:\t" + customerCity + "\n" + "Tel.:\t" + customerPhone);*/
+
+        int menge = 1;
+        double preis = 0.0;
+
+        menge = ui->artikelMenge->value();
+
+        preis = einzelPreis * menge;
+
+
+
+        on_hinzufugen_clicked(artikelName, menge, preis, artikelNetto);
+
     }
 
 }
@@ -125,3 +125,37 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
     m_stack->addWidget(m_liste);
     m_stack->setCurrentIndex(6);
 }
+
+void OverviewBestellungen_Bestellung::on_hinzufugen_clicked(QString& artikelName, int& menge, double& preis, QString& artikelNetto)
+{
+    /*QStandardItemModel *modelWaren = new QStandardItemModel(this);
+    modelWaren->setHorizontalHeaderLabels(QStringList() << "Artikel" << "Menge" << "Einzelpreis" << "Preis");
+    modelWaren->setColumnCount(4);
+    modelWaren->setData(modelWaren->index(0, 0), QVariant(artikelName));
+    modelWaren->setData(modelWaren->index(0, 1), QVariant(menge));
+    modelWaren->setData(modelWaren->index(0, 2), QVariant(artikelNetto));
+    modelWaren->setData(modelWaren->index(0, 3), QVariant(preis));
+
+    ui->warenkorb->setModel(modelWaren);
+    //ui->warenkorb->resizeColumnsToContents();*/
+    ui->debug->setText(artikelName + " " + artikelNetto);
+
+    QSqlQueryModel *modelWaren = new QSqlQueryModel();
+
+    QSqlQuery queryWaren;
+    queryWaren.prepare("SELECT Artikelname,"
+                       "CONCAT(Preis_Netto, ' €') AS Preis_Netto, "
+                       "CONCAT(:menge * Preis_Netto, ' €') AS Gesamtpreis"
+                       "from artikel WHERE Artikelname LIKE :artikelName");
+
+    queryWaren.exec();
+
+    modelWaren->setQuery(std::move(queryWaren));
+    ui->warenkorb->setModel(modelWaren);
+
+    //qDebug() << queryWaren.value('Artikelname');
+
+
+    ui->gesamtPreis->setText(QString::number(preis));
+}
+

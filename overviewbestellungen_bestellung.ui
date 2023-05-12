@@ -48,6 +48,12 @@
      <height>101</height>
     </rect>
    </property>
+   <property name="selectionMode">
+    <enum>QAbstractItemView::SingleSelection</enum>
+   </property>
+   <property name="selectionBehavior">
+    <enum>QAbstractItemView::SelectRows</enum>
+   </property>
    <property name="placeholderText" stdset="0">
     <string/>
    </property>
@@ -103,7 +109,7 @@
      <height>121</height>
     </rect>
    </property>
-   <property name="placeholderText">
+   <property name="placeholderText" stdset="0">
     <string>Warenkorbliste</string>
    </property>
   </widget>
@@ -200,6 +206,39 @@
    </property>
    <property name="text">
     <string>Orders</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>510</x>
+     <y>510</y>
+     <width>91</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Gesamtpreis:</string>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="gesamtPreis">
+   <property name="geometry">
+    <rect>
+     <x>610</x>
+     <y>510</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTextBrowser" name="debug">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>520</y>
+     <width>256</width>
+     <height>81</height>
+    </rect>
    </property>
   </widget>
  </widget>
