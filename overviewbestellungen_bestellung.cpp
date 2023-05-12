@@ -88,12 +88,10 @@ void OverviewBestellungen_Bestellung::onArtikelClicked(const QModelIndex &index)
 
         artikelID = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 0)).toString();
         artikelName = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 1)).toString();
-        lagerbestand = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 2)).toDouble();
-        einzelPreis = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 3)).toInt();
+        lagerbestand = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 2)).toInt();
+        einzelPreis = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 3)).toDouble();
 
         ui->artikelMenge->setMaximum(lagerbestand);
-        menge = ui->artikelMenge->value();
-        preis = einzelPreis * menge;
     }
 }
 
@@ -122,6 +120,9 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
 
 void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
+    menge = ui->artikelMenge->value();
+    preis = einzelPreis * menge;
+
     // Setze die Artikelinformationen entsprechend in die Tabelle warenkorb ein
     QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
     if (!warenkorbModel) {
