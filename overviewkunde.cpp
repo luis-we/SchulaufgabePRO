@@ -110,7 +110,7 @@ void OverviewKunde::LoadLocations()
 void OverviewKunde::DeleteCustomer()
 {
     //Löscht den Kunden aus der Datenbank
-    //m_selectedCustomer->GetValue()->delete();
+    m_selectedCustomer->GetValue()->deleteKunde();
     //Löscht den Kunden aus der Kundenliste
     delete m_selectedCustomer;
     //Setzt den ausgewählten Kunden auf einen null pointer
@@ -162,7 +162,7 @@ void OverviewKunde::SelectCustomer(ListItem<Kunde>* customer)
 //Kundendetails in das Formular laden
 void OverviewKunde::LoadCustomer(Kunde* customer) {
     //Setzen aller Parameter vom Kunden in die Formular Felder
-    ui->id->setText(QString::number(customer->getID()));
+    ui->id->setText(QString::number(customer->getId()));
     ui->titel->setText(customer->getTitel());
     ui->name->setText(customer->getName());
     ui->firstname->setText(customer->getVorname());
@@ -246,13 +246,13 @@ void OverviewKunde::SaveCustomer(bool created)
 
     if(created) {
         //Erstellen eines neuen Kundeneintrags in der Datenbank
-        //customer->create();
+        customer->saveKunde();
         //Laden der Kundendetails in das Formular
         LoadCustomer(customer);
     }
     else {
         //Speichern der veränderten Kundendaten
-        //customer->save();
+        customer->updateKunde();
     }
 
     //Aktualisieren des Button Textes
@@ -297,6 +297,108 @@ void OverviewKunde::LoadCustomers()
 
 //Eingabeüberprüfung der Formularfelder
 bool OverviewKunde::VerifyInput() {
+    //Auslesen der Formularfelder-Werte
+    QString titel = ui->titel->toPlainText();
+    QString email = ui->mail->toPlainText();
+    QString firstName = ui->firstname->toPlainText();
+    QString lastName = ui->name->toPlainText();
+    QDate birthdate = ui->birthdate->date();
+    QString street = ui->street->toPlainText();
+    QString phone = ui->phone->toPlainText();
+    QString nr = ui->streetnr->toPlainText();
+    QComboBox *comboBoxSalutation = ui->salutation;
+    QComboBox *comboBoxOrt = ui->ort;
+
+    //Erstellen der Regulären ausdrücke zur Überprüfung der Werte
+    QRegularExpression regexName("[A-Za-z]{2,40}");
+    QRegularExpression regexEmail("[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[A-Za-z]{0,}");
+    QRegularExpression regexStreet("[A-Za-z]{3,50}");
+    QRegularExpression regexPhone("^(?=.{5,30}$)[+]?[\\d\\s]+$");
+    QRegularExpression regexTitel("^[a-zA-Z .]{2,80}$");
+    QRegularExpression regexNr("^\\d{1,4}\\s?[a-zA-Z]?$");
+
+    //Überprüfung der Anrede
+    if(comboBoxSalutation->currentIndex() == -1) {
+        QMessageBox::warning(this, "Fehler", "Bitte wählen Sie eine Anrede aus.");
+        comboBoxSalutation->setFocus();
+        return false;
+    }
+
+    //Überprüfung des Titels
+    if(!titel.isEmpty()) {
+        if(!titel.contains(regexTitel)) {
+            QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Titel ein.");
+            ui->name->setFocus();
+            ui->name->selectAll();
+            return false;
+        }
+    }
+
+    //Überprüfung des Namens
+    if(!lastName.contains(regexName)) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Namen ein.");
+        ui->name->setFocus();
+        ui->name->selectAll();
+        return false;
+    }
+
+    //Überprüfung des Vornamens
+    if(!firstName.contains(regexName)) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie einen gültigen Vornamen ein.");
+        ui->firstname->setFocus();
+        ui->firstname->selectAll();
+        return false;
+    }
+
+    //Überprüfung der Strasse
+    if(!street.contains(regexStreet)) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie ein gültiges Straße ein.");
+        ui->street->setFocus();
+        ui->birthdate->selectAll();
+        return false;
+    }
+
+    //Überprüfung der Hausnummer
+    if(!nr.contains(regexNr)) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Nr ein");
+        ui->streetnr->setFocus();
+        ui->streetnr->selectAll();
+        return false;
+    }
+
+    //Überprüfung des Ortes
+    if(comboBoxOrt->currentIndex() == -1) {
+        QMessageBox::warning(this, "Fehler", "Bitte wählen Sie ein Ort aus.");
+        comboBoxOrt->setFocus();
+        return false;
+    }
+
+    //Überprüfung der Telefonnummer
+    if(!phone.contains(regexPhone)) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige Telefonnummer ein (mindestens 5 Ziffern).");
+        ui->phone->setFocus();
+        ui->phone->selectAll();
+        return false;
+    }
+
+    //Überprüfung des Geburtsdatums
+    if(!birthdate.isValid()) {
+        QMessageBox::warning(this, "Fehler", "Bitte geben Sie ein gültiges Geburtsdatum ein.");
+        ui->mail->setFocus();
+        ui->mail->selectAll();
+        return false;
+    }
+
+    //Überprüfung der Email
+    if(!email.isEmpty()) {
+        if(!email.contains(regexEmail)) {
+            QMessageBox::warning(this, "Fehler", "Bitte geben Sie eine gültige E-Mail-Adresse ein.");
+            ui->mail->setFocus();
+            ui->mail->selectAll();
+            return false;
+        }
+    }
+
     return true;
 }
 
