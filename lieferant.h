@@ -15,7 +15,7 @@ class lieferant
         lieferant(int id, int anrede, QString name, QString Ansprechpartner, QString strasse,
             QString hausnr, int ort, QString telefon);
 
-
+        // Deklaration der öff. Setterfunktionen
         void setAnrede(int anrede);
         void setName(QString name);
         void setAnsprechpartner(QString Ansprechpartner);
@@ -24,6 +24,7 @@ class lieferant
         void setOrt(int ort);
         void setTelefon(QString telefon);
 
+        // Deklaration der öff. Getterfunktionen
         int getID();
         int getAnrede();
         QString getName();
@@ -33,6 +34,7 @@ class lieferant
         int getOrt();
         QString getTelefon();
 
+        // Deklaration der öff. Funktionen
         void updateLieferant(int anrede, QString name, QString Ansprechpartner, QString strasse, QString hausNr, int ort, QString telefon);
         void updateLieferant();
         void saveLieferant();

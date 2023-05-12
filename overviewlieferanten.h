@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// 
+// Def. der Klasse OverviewLieferanten
 namespace Ui {
 class OverviewLieferanten;
 }
@@ -47,6 +47,7 @@ private:
     MainWindow* parent;
     QVBoxLayout* m_layout;
 
+    // Private Methoden
     void LeereForm();
     void LadeAnreden();
     void LadeOrte();
