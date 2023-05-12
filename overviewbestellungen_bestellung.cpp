@@ -132,12 +132,36 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
         return;
     }
 
+
+
+
+
     // Setze die Artikelinformationen entsprechend in die Tabelle warenkorb ein
     QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
     if (!warenkorbModel) {
         warenkorbModel = new QStandardItemModel(this);
         ui->warenkorb->setModel(warenkorbModel);
         warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelname" << "Einzelpreis" << "Menge" << "Gesamtpreis");
+    }
+
+    // Prüfen, ob die Summe der Menge im Warenkorb und der neuen Menge den maximalen Lagerbestand übersteigt
+    int mengeImWarenkorb = 0;
+    if (warenkorbModel) {
+        int rowCount = warenkorbModel->rowCount();
+        for (int row = 0; row < rowCount; ++row) {
+            QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
+            mengeImWarenkorb += warenkorbModel->data(mengeIndex).toInt();
+        }
+    }
+
+    int verfuegbarerLagerbestand = lagerbestand - mengeImWarenkorb;
+    if (menge > verfuegbarerLagerbestand) {
+        // Menge auf den verfügbaren Lagerbestand begrenzen
+        menge = verfuegbarerLagerbestand;
+
+        // Warnung anzeigen
+        fehlerMenge->setText("Nicht genügend Artikel vorrätig. Insgesamt vorrätig: " + QString::number(lagerbestand) + " Stück");
+        fehlerMenge->show();
     }
 
     // Überprüfen, ob der Artikel bereits im Warenkorb vorhanden ist
