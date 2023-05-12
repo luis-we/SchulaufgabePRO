@@ -5,6 +5,8 @@
 #include <QMessageBox>
 #include <QSqlQueryModel>
 
+
+// zeigt bisherige Bestellungen an
 overviewbestellungen_liste::overviewbestellungen_liste(int customerId, QStackedWidget *stack, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::overviewbestellungen_liste),
