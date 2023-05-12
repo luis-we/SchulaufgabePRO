@@ -123,6 +123,13 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     menge = ui->artikelMenge->value();
     preis = einzelPreis * menge;
 
+    QMessageBox *fehlerMenge = new QMessageBox();
+
+    if(menge==0){
+        fehlerMenge->setText("Menge darf nicht Null sein! Du Hurensohn");
+        fehlerMenge->show();
+    }
+
     // Setze die Artikelinformationen entsprechend in die Tabelle warenkorb ein
     QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
     if (!warenkorbModel) {
