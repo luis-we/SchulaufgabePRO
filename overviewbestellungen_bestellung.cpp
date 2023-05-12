@@ -42,7 +42,7 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 
     // Suche nach Artikel mit dem eingegebenen Text im Namen
     QSqlQuery queryArtikel;
-    queryArtikel.prepare("SELECT * FROM artikel WHERE Artikelname LIKE :artikel");
+    queryArtikel.prepare("SELECT Artikelnummer, Artikelname, Lagerbestand, Preis_Netto FROM artikel WHERE Artikelname LIKE :artikel");
     queryArtikel.bindValue(":artikel", "%" + searchText + "%");
 
     if (!queryArtikel.exec()) {
@@ -54,11 +54,6 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 
     // Fügen Sie jeden gefundenen Artikel zur Liste hinzu
     while (queryArtikel.next()) {
-        artikelName = queryArtikel.value("Artikelname").toString();
-        artikelID = queryArtikel.value("Artikelnummer").toString();
-        einzelPreis = queryArtikel.value("Preis_Netto").toDouble();
-
-
         QSqlQueryModel *modelArtikel = new QSqlQueryModel();
         modelArtikel->setQuery(queryArtikel);
 
@@ -77,14 +72,31 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         ui->artikelListe->horizontalHeader()->setMaximumSectionSize(availableWidthA);
 
 
-        menge = ui->artikelMenge->value();
-
-        preis = einzelPreis * menge;
 
 
+        connect(ui->artikelListe, &QTableView::clicked, this, &OverviewBestellungen_Bestellung::onArtikelClicked);
     }
 
 }
+
+void OverviewBestellungen_Bestellung::onArtikelClicked(const QModelIndex &index)
+{
+    // Überprüfen, ob ein gültiger Index vorliegt
+    if (index.isValid()) {
+        // Zeile der ausgewählten Zelle abrufen
+        int row = index.row();
+
+        artikelID = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 0)).toString();
+        artikelName = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 1)).toString();
+        lagerbestand = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 2)).toDouble();
+        einzelPreis = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 3)).toInt();
+
+        ui->artikelMenge->setMaximum(lagerbestand);
+        menge = ui->artikelMenge->value();
+        preis = einzelPreis * menge;
+    }
+}
+
 
 void OverviewBestellungen_Bestellung::on_back_clicked()
 {

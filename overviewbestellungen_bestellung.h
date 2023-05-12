@@ -26,6 +26,7 @@ private slots:
     void on_orders_clicked();
 
     void on_hinzufugen_clicked();
+    void onArtikelClicked(const QModelIndex &index);
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
@@ -38,6 +39,7 @@ private:
     double einzelPreis = 0;
     double preis = 0;
     int menge = 0;
+    int lagerbestand = 0;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H
