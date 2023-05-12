@@ -122,12 +122,14 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
     menge = ui->artikelMenge->value();
     preis = einzelPreis * menge;
+    gesamtPreis += preis;
 
     QMessageBox *fehlerMenge = new QMessageBox();
 
-    if(menge==0){
-        fehlerMenge->setText("Menge darf nicht Null sein! Du Hurensohn");
+    if (menge == 0) {
+        fehlerMenge->setText("Menge darf nicht Null sein!");
         fehlerMenge->show();
+        return;
     }
 
     // Setze die Artikelinformationen entsprechend in die Tabelle warenkorb ein
@@ -135,19 +137,57 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     if (!warenkorbModel) {
         warenkorbModel = new QStandardItemModel(this);
         ui->warenkorb->setModel(warenkorbModel);
-        warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelname" << "Einzelpreis" << "Menge" << "Preis");
+        warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelname" << "Einzelpreis" << "Menge" << "Gesamtpreis");
     }
 
-    QList<QStandardItem*> rowData;
-    rowData << new QStandardItem(artikelName);
-    rowData << new QStandardItem(QString::number(einzelPreis));
-    rowData << new QStandardItem(QString::number(menge));
-    rowData << new QStandardItem(QString::number(preis));
+    // Überprüfen, ob der Artikel bereits im Warenkorb vorhanden ist
+    bool artikelVorhanden = false;
+    int rowCount = warenkorbModel->rowCount();
+    for (int row = 0; row < rowCount; ++row) {
+        QModelIndex index = warenkorbModel->index(row, 0); // Spalte mit dem Artikelnamen
+        if (warenkorbModel->data(index).toString() == artikelName) {
+            // Artikel bereits im Warenkorb gefunden
+            artikelVorhanden = true;
 
-    warenkorbModel->appendRow(rowData);
+            // Menge und Preis aktualisieren
+            QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
+            int vorhandeneMenge = warenkorbModel->data(mengeIndex).toInt();
+            int neueMenge = vorhandeneMenge + menge;
+            warenkorbModel->setData(mengeIndex, neueMenge);
 
-    // Optional: Warenkorb-Tabelle anpassen
+            QModelIndex preisIndex = warenkorbModel->index(row, 3); // Spalte mit dem Gesamtpreis
+            double vorhandenerPreis = warenkorbModel->data(preisIndex).toDouble();
+            double neuerPreis = vorhandenerPreis + preis;
+            warenkorbModel->setData(preisIndex, neuerPreis);
+
+            break;
+        }
+    }
+
+    if (!artikelVorhanden) {
+        // Artikel ist noch nicht im Warenkorb, neuen Eintrag hinzufügen
+        QList<QStandardItem*> rowData;
+        rowData << new QStandardItem(artikelName);
+        rowData << new QStandardItem(QString::number(einzelPreis));
+        rowData << new QStandardItem(QString::number(menge));
+        rowData << new QStandardItem(QString::number(preis));
+
+        warenkorbModel->appendRow(rowData);
+    }
+
+    // Warenkorb-Tabelle anpassen
     ui->warenkorb->resizeColumnsToContents();
-}
 
+    int columnCount = warenkorbModel->columnCount();
+    int availableWidth = ui->warenkorb->viewport()->width();
+    int defaultColumnWidth = availableWidth / columnCount;
+
+    for (int i = 0; i < columnCount; ++i) {
+        ui->warenkorb->setColumnWidth(i, defaultColumnWidth);
+    }
+
+    ui->gesamtPreis->setText(QString::number(gesamtPreis));
+
+
+}
 

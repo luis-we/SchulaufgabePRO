@@ -38,6 +38,7 @@ private:
     QString artikelID = "";
     double einzelPreis = 0;
     double preis = 0;
+    double gesamtPreis = 0;
     int menge = 0;
     int lagerbestand = 0;
 };

@@ -231,16 +231,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTextBrowser" name="debug">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>520</y>
-     <width>256</width>
-     <height>81</height>
-    </rect>
-   </property>
-  </widget>
  </widget>
  <resources/>
  <connections/>
