@@ -231,6 +231,34 @@ void OverviewBestellungen_Bestellung::on_bestellen_clicked()
 
     QMessageBox *erfolgBestellung = new QMessageBox();
     erfolgBestellung->setText("Herzlichen Glückwunsch, der Kladeradatsch ist Bestellt");
-        erfolgBestellung->show();
+    erfolgBestellung->show();
+
+
+        // Erstelle das Query, um die Tabelle `bestellungen` abzurufen
+    QSqlQuery queryBestellungen;
+    queryBestellungen.prepare("SELECT ID_Bestellung FROM bestellungen WHERE ID_Kunde = :m_customerId ORDER BY Bestelldatum DESC LIMIT 1");
+    queryBestellungen.bindValue(":m_customerId", m_customerId);
+
+    // Führe das Query aus
+    if (!queryBestellungen.exec()) {
+        // Fehler beim Ausführen des Querys
+        qDebug() << "Fehler beim Abrufen der Bestellungen:";
+        qDebug() << queryBestellungen.lastError().text();
+        return;
+    }
+
+    int idBestellung = 0;
+
+    // Überprüfe, ob mindestens eine Bestellung gefunden wurde
+    if (queryBestellungen.next()) {
+        // Speichere die ID_Bestellung in einer Variablen
+        idBestellung = queryBestellungen.value("ID_Bestellung").toInt();
+
+        // Verwende die ID_Bestellung wie gewünscht
+        qDebug() << "ID_Bestellung: " << idBestellung;
+    } else {
+        // Keine Bestellung für den Kunden gefunden
+        qDebug() << "Keine Bestellung gefunden";
+    }
 }
 
