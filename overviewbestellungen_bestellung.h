@@ -25,13 +25,19 @@ private slots:
     void searchArtikel(const QString& searchText);
     void on_orders_clicked();
 
-    void on_hinzufugen_clicked(QString& artikelName, int& menge, double& preis, QString& artikelNetto);
+    void on_hinzufugen_clicked();
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
     QStackedWidget* m_stack;
     overviewbestellungen_liste* m_liste = nullptr;
+
+    QString artikelName = "";
+    QString artikelID = "";
+    double einzelPreis = 0;
+    double preis = 0;
+    int menge = 0;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H

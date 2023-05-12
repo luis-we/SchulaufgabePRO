@@ -54,27 +54,15 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 
     // Fügen Sie jeden gefundenen Artikel zur Liste hinzu
     while (queryArtikel.next()) {
-        QString artikelName = queryArtikel.value("Artikelname").toString();
-        QString artikelNetto = queryArtikel.value("Preis_Netto").toString();
-        QString artikelID = queryArtikel.value("Artikelnummer").toString();
-        double einzelPreis = queryArtikel.value("Preis_Netto").toDouble();
+        artikelName = queryArtikel.value("Artikelname").toString();
+        artikelID = queryArtikel.value("Artikelnummer").toString();
+        einzelPreis = queryArtikel.value("Preis_Netto").toDouble();
 
 
         QSqlQueryModel *modelArtikel = new QSqlQueryModel();
-
-        QSqlQuery queryTabelle;
-        queryTabelle.prepare("SELECT Artikelname, Preis_Netto from artikel WHERE Artikelname LIKE :artikelTest");
-        queryTabelle.bindValue(":artikelTest", "%" + searchText + "%");
-
-        queryTabelle.bindValue(":artikelID", artikelID);
-        if (!queryTabelle.exec()) {
-            QMessageBox::critical(this, "Fehler", "Fehler bei der Datenbankabfrage: " + queryTabelle.lastError().text());
-            return;
-        }
-        queryTabelle.exec();
+        modelArtikel->setQuery(queryArtikel);
 
 
-        modelArtikel->setQuery(std::move(queryTabelle));
         ui->artikelListe->setModel(modelArtikel);
         ui->artikelListe->resizeColumnsToContents();
         int columnCountA = modelArtikel->columnCount();
@@ -89,17 +77,10 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
         ui->artikelListe->horizontalHeader()->setMaximumSectionSize(availableWidthA);
 
 
-
-        int menge = 1;
-        double preis = 0.0;
-
         menge = ui->artikelMenge->value();
 
         preis = einzelPreis * menge;
 
-
-
-        on_hinzufugen_clicked(artikelName, menge, preis, artikelNetto);
 
     }
 
@@ -126,7 +107,7 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
     m_stack->setCurrentIndex(6);
 }
 
-void OverviewBestellungen_Bestellung::on_hinzufugen_clicked(QString& artikelName, int& menge, double& preis, QString& artikelNetto)
+void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
     /*QStandardItemModel *modelWaren = new QStandardItemModel(this);
     modelWaren->setHorizontalHeaderLabels(QStringList() << "Artikel" << "Menge" << "Einzelpreis" << "Preis");
@@ -138,7 +119,9 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked(QString& artikelName
 
     ui->warenkorb->setModel(modelWaren);
     //ui->warenkorb->resizeColumnsToContents();*/
-    ui->debug->setText(artikelName + " " + artikelNetto);
+
+    ui->debug->setText(artikelName + " " + QString::number(einzelPreis));
+
 
     QSqlQueryModel *modelWaren = new QSqlQueryModel();
 
