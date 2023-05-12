@@ -121,8 +121,6 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
 void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
     menge = ui->artikelMenge->value();
-    preis = einzelPreis * menge;
-    gesamtPreis += preis;
 
     QMessageBox *fehlerMenge = new QMessageBox();
 
@@ -159,10 +157,15 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
         // Menge auf den verfügbaren Lagerbestand begrenzen
         menge = verfuegbarerLagerbestand;
 
+
         // Warnung anzeigen
         fehlerMenge->setText("Nicht genügend Artikel vorrätig. Insgesamt vorrätig: " + QString::number(lagerbestand) + " Stück");
         fehlerMenge->show();
+        return;
     }
+
+    preis = einzelPreis * menge;
+    gesamtPreis += preis;
 
     // Überprüfen, ob der Artikel bereits im Warenkorb vorhanden ist
     bool artikelVorhanden = false;
