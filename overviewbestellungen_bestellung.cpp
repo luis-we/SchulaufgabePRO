@@ -215,3 +215,16 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 
 }
 
+
+void OverviewBestellungen_Bestellung::on_bestellen_clicked()
+{
+    QSqlQuery queryBestellung;
+    queryBestellung.prepare("INSERT INTO `bestellungen` (`ID_Kunde`) VALUES (:m_customerId);");
+    queryBestellung.bindValue(":m_customerId", m_customerId);
+    queryBestellung.exec();
+
+    QMessageBox *erfolgBestellung = new QMessageBox();
+    erfolgBestellung->setText("Herzlichen Glückwunsch, der Kladeradatsch ist Bestellt");
+        erfolgBestellung->show();
+}
+

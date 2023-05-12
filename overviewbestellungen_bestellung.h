@@ -28,6 +28,8 @@ private slots:
     void on_hinzufugen_clicked();
     void onArtikelClicked(const QModelIndex &index);
 
+    void on_bestellen_clicked();
+
 private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
