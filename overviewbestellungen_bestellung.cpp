@@ -147,8 +147,11 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     if (warenkorbModel) {
         int rowCount = warenkorbModel->rowCount();
         for (int row = 0; row < rowCount; ++row) {
+            QModelIndex artikelNameIndex = warenkorbModel->index(row, 0); // Spalte mit dem Artikelnamen
             QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
-            mengeImWarenkorb += warenkorbModel->data(mengeIndex).toInt();
+            if (warenkorbModel->data(artikelNameIndex).toString() == artikelName) {
+                mengeImWarenkorb += warenkorbModel->data(mengeIndex).toInt();
+            }
         }
     }
 
