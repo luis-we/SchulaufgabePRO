@@ -233,8 +233,7 @@ void OverviewBestellungen_Bestellung::on_bestellen_clicked()
     erfolgBestellung->setText("Herzlichen Glückwunsch, der Kladeradatsch ist Bestellt");
     erfolgBestellung->show();
 
-
-        // Erstelle das Query, um die Tabelle `bestellungen` abzurufen
+    // Erstelle das Query, um die Tabelle `bestellungen` abzurufen
     QSqlQuery queryBestellungen;
     queryBestellungen.prepare("SELECT ID_Bestellung FROM bestellungen WHERE ID_Kunde = :m_customerId ORDER BY Bestelldatum DESC LIMIT 1");
     queryBestellungen.bindValue(":m_customerId", m_customerId);
@@ -259,6 +258,47 @@ void OverviewBestellungen_Bestellung::on_bestellen_clicked()
     } else {
         // Keine Bestellung für den Kunden gefunden
         qDebug() << "Keine Bestellung gefunden";
+        return;
     }
-}
 
+    // Überprüfe, ob ein Warenkorb vorhanden ist
+    QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
+    if (!warenkorbModel) {
+        qDebug() << "Kein Warenkorb vorhanden";
+        return;
+    }
+
+    int idArtikel = 0;
+
+    // Durchlaufe den Warenkorb und füge die Einträge in die Tabelle "zuordnung Bestellung" ein
+    int rowCount = warenkorbModel->rowCount();
+    for (int row = 0; row < rowCount; ++row) {
+        QModelIndex artikelNameIndex = warenkorbModel->index(row, 0); // Spalte mit dem Artikelnamen
+        QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
+
+        QString artikelName = warenkorbModel->data(artikelNameIndex).toString();
+        int menge = warenkorbModel->data(mengeIndex).toInt();
+
+        QSqlQuery queryNameToID;
+        queryNameToID.prepare("SELECT Artikelnummer FROM artikel WHERE Artikelname LIKE :artikelName LIMIT 1");
+        queryNameToID.exec();
+
+
+
+        if (queryNameToID.next()) {
+            // Speichere die ID_Bestellung in einer Variablen
+            idArtikel = queryNameToID.value("Artikelnummer").toInt();
+        }
+
+
+        // Füge den Eintrag in die Tabelle "zuordnung Bestellung" ein
+        QSqlQuery queryZuordnung;
+        queryZuordnung.prepare("INSERT INTO `zuordnung_bestellungen_artikel`(`ID_Bestellung`, `ID_Artikel`, `Menge`) VALUES (:idBestellung, :idArtikel, :menge)");
+        queryZuordnung.bindValue(":idBestellung", idBestellung);
+        queryZuordnung.bindValue(":artikelName", artikelName);
+        queryZuordnung.bindValue(":menge", menge);
+        queryZuordnung.exec();
+        qDebug() << &queryZuordnung;
+    }
+
+}
