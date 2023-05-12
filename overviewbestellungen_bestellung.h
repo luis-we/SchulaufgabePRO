@@ -37,7 +37,7 @@ private:
     overviewbestellungen_liste* m_liste = nullptr;
 
     QString artikelName = "";
-    QString artikelID = "";
+    int artikelID = 0;
     double einzelPreis = 0;
     double preis = 0;
     double gesamtPreis = 0;

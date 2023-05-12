@@ -11,7 +11,7 @@
 #include <QtGui>
 
 
-
+// Komplette Bestellung durchführen
 OverviewBestellungen_Bestellung::OverviewBestellungen_Bestellung(int customerId, QStackedWidget* stack, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::overviewbestellungen_bestellung),
@@ -31,16 +31,21 @@ OverviewBestellungen_Bestellung::~OverviewBestellungen_Bestellung()
     delete ui;
 }
 
+
+/**
+    * Zeigt alle Artikel in der TableView an, die den Suchtext enthalten
+    * Zeilen sind aklickbar und ruft die Funktion onArtikelClicked auf
+    * @param searchText
+    */
 void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 {
     if (searchText.length() < 3) {
         // Suche nicht starten, wenn weniger als 3 Buchstaben eingegeben wurden
+        QStandardItemModel *model = new QStandardItemModel(0, 0); // Neues leeres Datenmodell erstellen
+        ui->artikelListe->setModel(model); // Das neue Datenmodell der TableView zuweisen
         return;
     }
 
-   // ui->artikelListe->clear();
-
-    // Suche nach Artikel mit dem eingegebenen Text im Namen
     QSqlQuery queryArtikel;
     queryArtikel.prepare("SELECT Artikelnummer, Artikelname, Lagerbestand, Preis_Netto FROM artikel WHERE Artikelname LIKE :artikel");
     queryArtikel.bindValue(":artikel", "%" + searchText + "%");
@@ -79,6 +84,12 @@ void OverviewBestellungen_Bestellung::searchArtikel(const QString &searchText)
 
 }
 
+
+/**
+ * Wird aufgerufen, wenn eine Zelle in der TableView artikelListe angeklickt wurde
+ * @param index
+*/
+
 void OverviewBestellungen_Bestellung::onArtikelClicked(const QModelIndex &index)
 {
     // Überprüfen, ob ein gültiger Index vorliegt
@@ -86,7 +97,7 @@ void OverviewBestellungen_Bestellung::onArtikelClicked(const QModelIndex &index)
         // Zeile der ausgewählten Zelle abrufen
         int row = index.row();
 
-        artikelID = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 0)).toString();
+        artikelID = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 0)).toInt();
         artikelName = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 1)).toString();
         lagerbestand = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 2)).toInt();
         einzelPreis = ui->artikelListe->model()->data(ui->artikelListe->model()->index(row, 3)).toDouble();
@@ -96,12 +107,19 @@ void OverviewBestellungen_Bestellung::onArtikelClicked(const QModelIndex &index)
 }
 
 
+/**
+ * Wird aufgerufen, wenn der Button "Zurück" geklickt wurde
+*/
 void OverviewBestellungen_Bestellung::on_back_clicked()
 {
     m_stack->setCurrentIndex(4);
 }
 
 
+/**
+ * Wird aufgerufen, wenn der Button "bisherige Bestellungen" geklickt wurde
+ * der Stack wird erweitert
+*/
 void OverviewBestellungen_Bestellung::on_orders_clicked()
 {
 
@@ -118,6 +136,16 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
 }
 
 
+/**
+ * Die Artikel werden in den Warenkorb hinzugefügt
+ * Prüfung auf Menge <= Lagerbestand
+ * Prüfung auf Menge > 0
+ * Prüfung auf Artikel bereits im Warenkorb, Anpassung der bisherigen Menge
+ * 
+ * Gesamtpreis wird berechnet
+ * Entfernen Button des Artiekls wird hinzugefügt
+ * 
+*/
 void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
     menge = ui->artikelMenge->value();
@@ -139,7 +167,7 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     if (!warenkorbModel) {
         warenkorbModel = new QStandardItemModel(this);
         ui->warenkorb->setModel(warenkorbModel);
-        warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelname" << "Einzelpreis" << "Menge" << "Gesamtpreis");
+        warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelnummer" << "Artikelname" << "Einzelpreis" << "Menge" << "Gesamtpreis" << "Entfernen");
     }
 
     // Prüfen, ob die Summe der Menge im Warenkorb und der neuen Menge den maximalen Lagerbestand übersteigt
@@ -147,8 +175,8 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     if (warenkorbModel) {
         int rowCount = warenkorbModel->rowCount();
         for (int row = 0; row < rowCount; ++row) {
-            QModelIndex artikelNameIndex = warenkorbModel->index(row, 0); // Spalte mit dem Artikelnamen
-            QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
+            QModelIndex artikelNameIndex = warenkorbModel->index(row, 1); // Spalte mit dem Artikelnamen
+            QModelIndex mengeIndex = warenkorbModel->index(row, 3); // Spalte mit der Menge
             if (warenkorbModel->data(artikelNameIndex).toString() == artikelName) {
                 mengeImWarenkorb += warenkorbModel->data(mengeIndex).toInt();
             }
@@ -174,18 +202,18 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     bool artikelVorhanden = false;
     int rowCount = warenkorbModel->rowCount();
     for (int row = 0; row < rowCount; ++row) {
-        QModelIndex index = warenkorbModel->index(row, 0); // Spalte mit dem Artikelnamen
+        QModelIndex index = warenkorbModel->index(row, 1); // Spalte mit dem Artikelnamen
         if (warenkorbModel->data(index).toString() == artikelName) {
             // Artikel bereits im Warenkorb gefunden
             artikelVorhanden = true;
 
             // Menge und Preis aktualisieren
-            QModelIndex mengeIndex = warenkorbModel->index(row, 2); // Spalte mit der Menge
+            QModelIndex mengeIndex = warenkorbModel->index(row, 3); // Spalte mit der Menge
             int vorhandeneMenge = warenkorbModel->data(mengeIndex).toInt();
             int neueMenge = vorhandeneMenge + menge;
             warenkorbModel->setData(mengeIndex, neueMenge);
 
-            QModelIndex preisIndex = warenkorbModel->index(row, 3); // Spalte mit dem Gesamtpreis
+            QModelIndex preisIndex = warenkorbModel->index(row, 4); // Spalte mit dem Gesamtpreis
             double vorhandenerPreis = warenkorbModel->data(preisIndex).toDouble();
             double neuerPreis = vorhandenerPreis + preis;
             warenkorbModel->setData(preisIndex, neuerPreis);
@@ -197,12 +225,28 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
     if (!artikelVorhanden) {
         // Artikel ist noch nicht im Warenkorb, neuen Eintrag hinzufügen
         QList<QStandardItem*> rowData;
+        rowData << new QStandardItem(QString::number(artikelID));
         rowData << new QStandardItem(artikelName);
         rowData << new QStandardItem(QString::number(einzelPreis));
         rowData << new QStandardItem(QString::number(menge));
         rowData << new QStandardItem(QString::number(preis));
+        rowData << new QStandardItem();
+
 
         warenkorbModel->appendRow(rowData);
+
+        // erstelle Löschen-Button am Ende der Zeile, um den Artikel dann aus dem Warenkorb zu entfernen
+        QPushButton *deleteButton = new QPushButton("Löschen");
+        ui->warenkorb->setIndexWidget(rowData.at(5)->index(), deleteButton);
+
+        connect(deleteButton, &QPushButton::clicked, [=]() {
+            // Artikel aus dem Warenkorb entfernen
+            warenkorbModel->removeRow(rowData.at(5)->index().row());
+
+            // Gesamtpreis aktualisieren
+            gesamtPreis -= preis;
+            ui->gesamtPreis->setText(QString::number(gesamtPreis));
+        });
     }
 
     // Warenkorb-Tabelle anpassen
@@ -222,6 +266,11 @@ void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 }
 
 
+/**
+ * Bestellung wird in die Datenbank eingetragen
+ * MessageBox für erfolgreiche Bestellung
+ * 
+*/
 void OverviewBestellungen_Bestellung::on_bestellen_clicked()
 {
     QSqlQuery queryBestellung;
@@ -229,12 +278,7 @@ void OverviewBestellungen_Bestellung::on_bestellen_clicked()
     queryBestellung.bindValue(":m_customerId", m_customerId);
     queryBestellung.exec();
 
-    QMessageBox *erfolgBestellung = new QMessageBox();
-    erfolgBestellung->setText("Herzlichen Glückwunsch, der Kladeradatsch ist Bestellt");
-    erfolgBestellung->show();
-
-
-        // Erstelle das Query, um die Tabelle `bestellungen` abzurufen
+    // Erstelle das Query, um die Tabelle `bestellungen` abzurufen
     QSqlQuery queryBestellungen;
     queryBestellungen.prepare("SELECT ID_Bestellung FROM bestellungen WHERE ID_Kunde = :m_customerId ORDER BY Bestelldatum DESC LIMIT 1");
     queryBestellungen.bindValue(":m_customerId", m_customerId);
@@ -259,6 +303,67 @@ void OverviewBestellungen_Bestellung::on_bestellen_clicked()
     } else {
         // Keine Bestellung für den Kunden gefunden
         qDebug() << "Keine Bestellung gefunden";
+        return;
     }
+
+    // Überprüfe, ob ein Warenkorb vorhanden ist
+    QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
+    if (!warenkorbModel) {
+        // Message box alert "Füge Artikel dem Warenkorb hinzu"
+        QMessageBox *leererWarenkorb = new QMessageBox();
+        leererWarenkorb->setText("Füge Artikel dem Warenkorb hinzu");
+        leererWarenkorb->show();
+        return;
+    }
+
+
+    // Durchlaufe den Warenkorb und füge die Einträge in die Tabelle "zuordnung Bestellung" ein
+    int rowCount = warenkorbModel->rowCount();
+    for (int row = 0; row < rowCount; ++row) {
+        QModelIndex aritkelIDIndex = warenkorbModel->index(row, 0); // Spalte mit ArtikelID
+        QModelIndex artikelNameIndex = warenkorbModel->index(row, 1); // Spalte mit dem Artikelnamen
+        QModelIndex mengeIndex = warenkorbModel->index(row, 3); // Spalte mit der Menge
+
+        QString artikelName = warenkorbModel->data(artikelNameIndex).toString();
+        artikelID = warenkorbModel->data(aritkelIDIndex).toInt();
+        int menge = warenkorbModel->data(mengeIndex).toInt();
+
+
+        // Füge den Eintrag in die Tabelle "zuordnung Bestellung" ein
+        QSqlQuery queryZuordnung;
+        queryZuordnung.prepare("INSERT INTO `zuordnung_bestellungen_artikel`(`ID_Bestellung`, `ID_Artikel`, `Menge`) VALUES (:idBestellung, :artikelID, :menge)");
+        queryZuordnung.bindValue(":idBestellung", idBestellung);
+        queryZuordnung.bindValue(":artikelID", artikelID);
+        queryZuordnung.bindValue(":menge", menge);
+        queryZuordnung.exec();
+
+
+        // Ändere den Lagerbestand für die Artikel, die bestellt wurden
+        QSqlQuery queryLagerbestand;
+        queryLagerbestand.prepare("UPDATE artikel SET Lagerbestand = Lagerbestand - :menge WHERE Artikelnummer = :artikelID");
+        queryLagerbestand.bindValue(":menge", menge);
+        queryLagerbestand.bindValue(":artikelID", artikelID);
+        queryLagerbestand.exec();
+
+    }
+
+    QMessageBox *erfolgBestellung = new QMessageBox();
+    erfolgBestellung->setText("Herzlichen Glückwunsch, der Kladeradatsch ist Bestellt");
+    erfolgBestellung->show();
+
+    // Lösche den Warenkorb
+    ui->warenkorb->model()->deleteLater();
+
+    // Setze den Gesamtpreis auf 0
+    gesamtPreis = 0;
+    ui->gesamtPreis->setText(0);
+
+    // Leere das Artikel auswählen-Feld und setze den Lagerbestand auf 0
+    ui->artikelListe->clearSelection();
+    ui->artikelMenge->setValue(0);
+    lagerbestand = 0;
+
 }
+
+
 
