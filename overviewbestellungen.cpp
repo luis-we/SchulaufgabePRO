@@ -7,6 +7,8 @@
 
 #include "mainwindow.h"
 
+
+// Dient zur Kundensuche
 OverviewBestellungen::OverviewBestellungen(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewBestellungen)
 {
     ui->setupUi(this);
