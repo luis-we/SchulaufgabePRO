@@ -43,6 +43,7 @@ private:
     double gesamtPreis = 0;
     int menge = 0;
     int lagerbestand = 0;
+    int rowCount = 0;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H
