@@ -119,38 +119,27 @@ void OverviewBestellungen_Bestellung::on_orders_clicked()
     m_stack->setCurrentIndex(6);
 }
 
+
 void OverviewBestellungen_Bestellung::on_hinzufugen_clicked()
 {
-    /*QStandardItemModel *modelWaren = new QStandardItemModel(this);
-    modelWaren->setHorizontalHeaderLabels(QStringList() << "Artikel" << "Menge" << "Einzelpreis" << "Preis");
-    modelWaren->setColumnCount(4);
-    modelWaren->setData(modelWaren->index(0, 0), QVariant(artikelName));
-    modelWaren->setData(modelWaren->index(0, 1), QVariant(menge));
-    modelWaren->setData(modelWaren->index(0, 2), QVariant(artikelNetto));
-    modelWaren->setData(modelWaren->index(0, 3), QVariant(preis));
+    // Setze die Artikelinformationen entsprechend in die Tabelle warenkorb ein
+    QStandardItemModel *warenkorbModel = qobject_cast<QStandardItemModel*>(ui->warenkorb->model());
+    if (!warenkorbModel) {
+        warenkorbModel = new QStandardItemModel(this);
+        ui->warenkorb->setModel(warenkorbModel);
+        warenkorbModel->setHorizontalHeaderLabels(QStringList() << "Artikelname" << "Einzelpreis" << "Menge" << "Preis");
+    }
 
-    ui->warenkorb->setModel(modelWaren);
-    //ui->warenkorb->resizeColumnsToContents();*/
+    QList<QStandardItem*> rowData;
+    rowData << new QStandardItem(artikelName);
+    rowData << new QStandardItem(QString::number(einzelPreis));
+    rowData << new QStandardItem(QString::number(menge));
+    rowData << new QStandardItem(QString::number(preis));
 
-    ui->debug->setText(artikelName + " " + QString::number(einzelPreis));
+    warenkorbModel->appendRow(rowData);
 
-
-    QSqlQueryModel *modelWaren = new QSqlQueryModel();
-
-    QSqlQuery queryWaren;
-    queryWaren.prepare("SELECT Artikelname,"
-                       "CONCAT(Preis_Netto, ' €') AS Preis_Netto, "
-                       "CONCAT(:menge * Preis_Netto, ' €') AS Gesamtpreis"
-                       "from artikel WHERE Artikelname LIKE :artikelName");
-
-    queryWaren.exec();
-
-    modelWaren->setQuery(std::move(queryWaren));
-    ui->warenkorb->setModel(modelWaren);
-
-    //qDebug() << queryWaren.value('Artikelname');
-
-
-    ui->gesamtPreis->setText(QString::number(preis));
+    // Optional: Warenkorb-Tabelle anpassen
+    ui->warenkorb->resizeColumnsToContents();
 }
+
 
