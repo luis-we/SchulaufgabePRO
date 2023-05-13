@@ -11,21 +11,17 @@
 
 using namespace std;
 
-
+// Konstruktor
 OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), ui(new Ui::OverviewLieferanten)
 {
     ui->setupUi(this);
     
-    //Übergibt parent an private Variable
-    this->parent = parent; 
+    this->parent = parent; // Zuweisung des Elternobjekts
+    this->m_layout = new QVBoxLayout(this); // Erstellung des QVBoxLayout-Objekts mit dem aktuellen Objekt als übergeordnetem Widget
+    ui->scrollArea->setLayout(this->m_layout); // Zuweisung des QVBoxLayout-Objekts zum Layout des Scrollbereichs
+    this->m_lieferanten = new vector<ListItem<lieferant>*>(); // Erstellung eines neuen Vektors für ListItem<lieferant>-Zeiger
+    this->m_ausgewaelterLieferant = nullptr; // Initialisierung des ausgewählten Lieferanten mit einem Nullzeiger
 
-    this->m_layout = new QVBoxLayout(this);
-
-    ui->scrollArea->setLayout(this->m_layout);
-
-    this->m_lieferanten = new vector<ListItem<lieferant>*>();
-
-    this->m_ausgewaelterLieferant = nullptr;
 
    //Deaktivieren der Erstellen & Löschen Buttons
     ui->pushButton_anlegen->setDisabled(true);
@@ -44,6 +40,7 @@ OverviewLieferanten::OverviewLieferanten(MainWindow* parent) : QWidget(parent), 
     LeereForm();
 }
 
+// Destruktor
 OverviewLieferanten::~OverviewLieferanten()
 {
     // Löscht UI wenn Fenster geschlossen wird
@@ -99,7 +96,7 @@ void OverviewLieferanten::LadeOrte()
     // Select Orte
     query.prepare("SELECT * FROM ort");
 
-    // Check Datenbank Abfrage
+    // Check Datenbank Abfrage, bei Fehler -> Ausgabe
     if (!query.exec()) {
         qDebug() << "Fehler bei der Suchen nach Orten: " << query.lastError().text();
         return;
@@ -116,7 +113,7 @@ void OverviewLieferanten::LadeOrte()
     }
 }
 
-// Zum füllen der Liste
+// Zum auffüllen der Liste
 void OverviewLieferanten::LadeLieferanten()
 {
     QSqlQuery query;
@@ -149,6 +146,7 @@ void OverviewLieferanten::LadeLieferanten()
     }
 }
 
+// Erstellt Lieferant Objekt für Liste
 void OverviewLieferanten::LadeLieferant(lieferant* delivery)
 {
     // Schreiben der Werte aus Obj in die Felder des Forms
@@ -189,17 +187,20 @@ ListItem<lieferant>* OverviewLieferanten::ErstelleLieferant(lieferant* delivery)
     return lieferatenTeil;
 }
 
+// Auswählen des Lieferanten
 void OverviewLieferanten::on_list_item_clicked(ListItem<lieferant>* item)
 {
     // Auswählen des geklickten Kunden
     WaehleLieferant(item);
 }
 
+// Button zum zurückkehren zum Hauptmenü
 void OverviewLieferanten::on_back_to_main_clicked()
 {
     this->parent->back_to_main(); //Zurück zum Hauptmenü Button
 }
 
+// Button zum anlegen eines neuen Lieferanten
 void OverviewLieferanten::on_pushButton_anlegen_clicked()
 {
      //Zurücksetzen des ausgewählten Kunden
@@ -213,6 +214,7 @@ void OverviewLieferanten::on_pushButton_anlegen_clicked()
     ui->pushButton_anlegen->setDisabled(true);
 }
 
+// Button zum speichern des neuen od. bearbeiteten Lieferanten
 void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
 {
     //Abbruch der Funktion wenn die Eingabeüberprüfung fehlschlägt
@@ -238,6 +240,7 @@ void OverviewLieferanten::on_pushButton_2_bearbeiten_clicked()
     SpeichereLieferant(created);
 }
 
+// Button zum löschen des ausgewählten Lieferanten
 void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
 {
     // Zurücksetzen der Formularfelder auf ihre Initialwerte
@@ -255,13 +258,14 @@ void OverviewLieferanten::on_pushButton_3_loeschen_clicked()
     ui->pushButton_3_loeschen->setDisabled(true);
 }
 
-
+// Button zum leeren der Formularfelder
 void OverviewLieferanten::on_pushButton_leeren_clicked()
 {
     // Knopf zum leeren der Formularfelder ruft nur Fkt auf
     LeereForm();
 }
 
+// Fkt zum speichern des Lieferanten
 void OverviewLieferanten::SpeichereLieferant(bool created)
 {
     // Auslesen des aktuell ausgewählten Kunden
@@ -293,19 +297,21 @@ void OverviewLieferanten::SpeichereLieferant(bool created)
      m_ausgewaelterLieferant->GetButton()->setText(delivery->getName());
 }
 
+// Fkt zum löschen des Lieferanten
 void OverviewLieferanten::LoescheLieferant()
 {
     // Löschen vom Lieferanten aus Datenbank
     m_ausgewaelterLieferant->GetValue()->deleteLieferant();
 
-    //
+    // Löschen Listeneintrags
     delete m_ausgewaelterLieferant;
 }
 
+// Fkt zur Eingebeüberprüfung
 bool OverviewLieferanten::UeberpruefeEingabe()
 {
       
-    //
+    // Extrahiert die Werte aus dem Textfeld und speichert sie in Variablen
     QString lieferantenname = ui->textBrowser_lieferantenname->toPlainText();
     QString Ansprechpartner = ui->textBrowser_lieferantenansprechpartner->toPlainText();
     QString street = ui->textBrowser_lieferantenstrasse->toPlainText();
@@ -395,23 +401,23 @@ void OverviewLieferanten::WaehleLieferant(ListItem<lieferant> *delivery)
 }
 
 //Wenn Ort gewechselt wird -> PLZ anpassen
-void OverviewLieferanten::Ortswechsel(int index)
+void OverviewLieferanten::on_textBrowser_ort_currentIndexChanged(int index)
 {
-    //
+    // Überprüft, ob "index" den Wert -1 hat
     if(index == -1) {
-        //
+        //Löscht den Inhalt des Textfelds
         ui->textBrowser_plz->clear();
         return;
     }
 
-    //
-    int location = ui->textBrowser_ort->currentData().value<int>();
+    // Extrahiert Wert des Auswahlfelds "textBrowser_ort" und speichert in "loc"
+    int loc = ui->textBrowser_ort->currentData().value<int>();
 
-    //
-    ui->textBrowser_plz->setText(HolePLZVonOrt(location));
+    // Setzt Text von "textBrowser_plz" auf  Rückgabewert Fkt "HolePLZVonOrt" mit "loc" als Argument
+    ui->textBrowser_plz->setText(HolePLZVonOrt(loc));
 }
 
-
+// Holt die Postleitzahl des Ortes
 QString OverviewLieferanten::HolePLZVonOrt(int loc)
 {
     // Initialisieren der Postleitzahl
@@ -425,8 +431,11 @@ QString OverviewLieferanten::HolePLZVonOrt(int loc)
     // Überprüfung der Datenbank Abfrage
     if (!query.exec()) {
         qDebug() << "Fehler bei der Suchen nach PLZ: " << query.lastError().text();
+        qDebug() << query.executedQuery();
         return plz;
     }
+
+    qDebug() << query.executedQuery();
 
     // Schleifendurchlauf zum Auslesen und Speichern der Postleitzahl
     while (query.next()) {

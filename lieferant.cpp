@@ -4,12 +4,13 @@
 
 using namespace std;
 
-// Konstruktoren
+// Konstruktor ohne Parameter
 lieferant::lieferant()
 {
     this->id = 0;
 }
 
+// Konstruktor mit Parametern
 lieferant::lieferant(int id, int anrede, QString name, QString Ansprechpartner, QString strasse,
              QString hausnr, int ort, QString telefon)
 {
@@ -21,10 +22,9 @@ lieferant::lieferant(int id, int anrede, QString name, QString Ansprechpartner, 
     setHausNr(hausnr);
     setOrt(ort);
     setTelefon(telefon);
-
 }
 
-// Setterfunktionen
+// Setterfunktionen 
 void lieferant::setAnrede(int anrede)
 {this->anrede = anrede;}
 
@@ -75,60 +75,64 @@ QString lieferant::getTelefon()
 
 // SQL FUNKTIONEN
 
-// 
+// Fkt zum DB Update eines Lieferanten (mit Parametern)
 void lieferant::updateLieferant(int anrede, QString name, QString Ansprechpartner, QString strasse, QString hausNr, int ort, QString telefon)
 {
+    // Löscht den Inhalt der QVariant-Variable "nullVariant"
     QVariant nullVariant = QVariant::fromValue<QString>(QString());
     nullVariant.clear();
 
     QSqlQuery query;
 
-    //
-    query.prepare("UPDATE lieferant SET "   //ANPASSEN!!
-                  "Anrede = :anrede, "
-                  "Name = :name, "
-                  "Vorname = :Ansprechpartner, "
+    // SQL-Query zum Update eines Lieferanten
+    query.prepare("UPDATE lieferant SET "
+                  "Anrede_Ansprechpartner = :anrede, "
+                  "Lieferantenname = :name, "
+                  "Ansprechpartner  = :Ansprechpartner, "
                   "Straße = :strasse, "
                   "Hausnummer = :hausnr, "
                   "ID_Ort = :ort, "
-                  "Telefon = :telefon, "
+                  "Telefon = :telefon "
                   "WHERE ID_Lieferant = :lieferant");
 
-    //
+    // Bindet die Parameter an die SQL-Query
     query.bindValue(":anrede", anrede);
     query.bindValue(":name", name);
-    query.bindValue(":vorname", Ansprechpartner);
+    query.bindValue(":Ansprechpartner", Ansprechpartner);
     query.bindValue(":strasse", strasse);
     query.bindValue(":hausnr", hausNr);
     query.bindValue(":ort", ort);
     query.bindValue(":telefon", telefon);
     query.bindValue(":lieferant", this->id);
 
-    //
+    
+    // Führt die SQL-Query aus
     query.exec();
 }
 
-//
+// Fkt zum DB Update eines Lieferanten (mit den Werten des Objekts)
 void lieferant::updateLieferant()
 {
-    // 
+    // Ruft die Methode "updateLieferant()" auf und übergibt Parameterwerte
     this->updateLieferant(this->anrede, this->name, this->Ansprechpartner, this->strasse, this->hausnummer, this->ort, this->telefon);
 }
 
-//
+// Fkt zum DB Laden eines Lieferanten (mit Parametern)
 void lieferant::saveLieferant()
 {
+    // Löscht den Inhalt der QVariant-Variable "nullVariant"
     QVariant nullVariant = QVariant::fromValue<QString>(QString());
     nullVariant.clear();
 
+    // Erstellt ein QSqlQuery-Objekt
     QSqlQuery query;
 
+    // SQL-Query zum Laden eines Lieferanten
     query.prepare("INSERT INTO lieferant"
-                  "(Anrede, Name, Vorname, Straße, Hausnummer, ID_Ort, Telefon) " //ANPASSEN!!
-                  "VALUES(:anrede, :name, :Ansprechpartner, :strasse,"
-                  ":hausnr, :ort, :telefon)");
+                  "(Anrede_Ansprechpartner , Lieferantenname, Ansprechpartner, Straße, Hausnummer, ID_Ort, Telefon) "
+                  "VALUES(:anrede, :name, :Ansprechpartner, :strasse, :hausnr, :ort, :telefon)");
 
-    //
+    // Bindet die Parameter an die SQL-Query
     query.bindValue(":anrede", this->anrede);
     query.bindValue(":name", this->name);
     query.bindValue(":Ansprechpartner", this->Ansprechpartner);
@@ -137,15 +141,18 @@ void lieferant::saveLieferant()
     query.bindValue(":ort", this->ort);
     query.bindValue(":telefon", this->telefon);
 
-    query.exec();
-
+    // Weist Variable "id" als Ganzzahl konvertierten Wert von "lastInsertId()" zu
     this->id = query.lastInsertId().toInt();
+
+    // Führt die SQL-Query aus
+    query.exec();
 
 }
 
+// Fkt zum DB Löschen eines Lieferanten
 void lieferant::deleteLieferant()
 {
-    //
+    // SQL Query + Bindung des Parameters + Ausführung
     QSqlQuery query;
     query.prepare("DELETE FROM lieferant WHERE ID_Lieferant = :id");
     query.bindValue(":id", this->id);

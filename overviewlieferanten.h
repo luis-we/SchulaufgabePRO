@@ -10,7 +10,7 @@
 
 using namespace std;
 
-// 
+// Def. der Klasse OverviewLieferanten
 namespace Ui {
 class OverviewLieferanten;
 }
@@ -38,6 +38,7 @@ private slots:
     void on_pushButton_2_bearbeiten_clicked();
     void on_pushButton_3_loeschen_clicked();
     void on_pushButton_leeren_clicked();
+    void on_textBrowser_ort_currentIndexChanged(int index);
 
 
 private:
@@ -46,6 +47,7 @@ private:
     MainWindow* parent;
     QVBoxLayout* m_layout;
 
+    // Private Methoden
     void LeereForm();
     void LadeAnreden();
     void LadeOrte();
@@ -56,7 +58,7 @@ private:
     bool UeberpruefeEingabe();
     QString HolePLZVonOrt(int loc);
     void WaehleLieferant(ListItem<lieferant>* delivery);
-    void Ortswechsel(int index);
+    
 
     ListItem<lieferant>* ErstelleLieferant(lieferant* delivery);
     ListItem<lieferant>* m_ausgewaelterLieferant;
