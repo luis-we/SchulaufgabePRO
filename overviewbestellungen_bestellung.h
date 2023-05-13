@@ -2,8 +2,9 @@
 #define OVERVIEWBESTELLUNGEN_BESTELLUNG_H
 
 #include "mainwindow.h"
+#include "overviewbestellungen_liste.h"
 #include <QWidget>
-
+#include "QSqlQueryModel"
 
 namespace Ui {
 class overviewbestellungen_bestellung;
@@ -21,11 +22,28 @@ public:
 
 private slots:
     void on_back_clicked();
+    void searchArtikel(const QString& searchText);
+    void on_orders_clicked();
+
+    void on_hinzufugen_clicked();
+    void onArtikelClicked(const QModelIndex &index);
+
+    void on_bestellen_clicked();
 
 private:
     Ui::overviewbestellungen_bestellung *ui;
     int m_customerId;
-     QStackedWidget* m_stack;
+    QStackedWidget* m_stack;
+    overviewbestellungen_liste* m_liste = nullptr;
+
+    QString artikelName = "";
+    int artikelID = 0;
+    double einzelPreis = 0;
+    double preis = 0;
+    double gesamtPreis = 0;
+    int menge = 0;
+    int lagerbestand = 0;
+    int rowCount = 0;
 };
 
 #endif // OVERVIEWBESTELLUNGEN_BESTELLUNG_H
